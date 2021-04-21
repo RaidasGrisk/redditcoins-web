@@ -6,7 +6,7 @@
         <!-- Coin table -->
       </p>
 
-      <table class="table is-hoverable has-text-right is-fullwidth" v-if="this.table_data_is_ready">
+      <table class="table is-hoverable has-text-right is-fullwidth">
           <thead>
               <tr>
                   <th class="has-text-weight-light has-text-left">Coin</th>
@@ -16,7 +16,7 @@
               </tr>
           </thead>
           <tbody>
-              <tr v-for="(item) in data" :key="item.id">
+              <tr v-for="(item) in this.get_table_data" :key="item.id">
                   <td>
                     <div class="columns is-vcentered is-mobile">
                       <div class="column is-1 has-text-left">
@@ -39,21 +39,19 @@
                   </td>
                   <!-- This or the cart will not allign properly -->
                   <td style="width: 200px;">
-                        <trend
-                            :data=item.data
-                            gradientDirection="left"
-                            :gradient="item.change > 0 ? ['#05b169', '#05b169', '#05b169']: ['#FF1279', '#FF1279', '#FF1279']"
-                            :padding="8"
-                            :radius="8"
-                            :stroke-width="4"
-                            stroke-linecap="butt"
-                            :auto-draw="true"
-                            :autoDrawDuration="1000"
-                            smooth>
-                        </trend>
-
+                    <trend
+                        :data=item.data
+                        gradientDirection="left"
+                        :gradient="item.change > 0 ? ['#05b169', '#05b169', '#05b169']: ['#FF1279', '#FF1279', '#FF1279']"
+                        :padding="8"
+                        :radius="8"
+                        :stroke-width="4"
+                        stroke-linecap="butt"
+                        :auto-draw="true"
+                        :autoDrawDuration="1000"
+                        smooth>
+                    </trend>
                   </td>
-                  <!-- and so on -->
               </tr>
           </tbody>
       </table>
@@ -64,37 +62,20 @@
 <script>
 
 import Trend from 'vuetrend';
+import mixin from '../mixin.js'
 
 export default {
   name: 'coinTable',
+    mixins: [mixin],
   components: {
     Trend
   },
   data() {
     return {
-      data: [],
-      table_data_is_ready: false,
-      imgError: true
+      table_data_created: false,
     }
   },
   methods: {
-    create_table_data() {
-      this.$api_data.vol_order.forEach((coin) => {
-        let last_val = this.$api_data.api_resp_['cryptocurrency'][coin].slice(-1)[0]
-        if (last_val > 1) {
-          this.data.push({
-            'coin': coin,
-            'mentions': last_val,
-            'change': this.$api_data.vol_pct_change[coin][0],
-            'data': this.$api_data.api_resp_['cryptocurrency'][coin]
-          })
-        }
-      })
-    },
-
-    onImgError() {
-			this.imgError = true;
-		},
 
 		imageUrl(coin) {
       let path = `@/assets/crypto_icons/${coin.toLowerCase()}.png`
@@ -105,26 +86,24 @@ export default {
   },
 
   computed: {
-    is_data_available() {
-      return this.$api_data.data_ready_flag
+    get_table_data() {
+      let data = []
+      this.vol_order.forEach((coin) => {
+        let last_val = this.api_resp_['cryptocurrency'][coin].slice(-1)[0]
+        if (last_val > 1) {
+          data.push({
+            'coin': coin,
+            'mentions': last_val,
+            'change': this.vol_pct_change[coin][0],
+            'data': this.api_resp_['cryptocurrency'][coin]
+          })
+        }
+      })
+      return data
     }
   },
 
-  // watch: {
-  //   table_data_is_ready: function() {
-  //     this.create_table_data()
-  //   }
-  // },
-
-  // WTH? how to track golbal var?
-  // I dont know, so just a delay
-  // this is bad, must be fixed
   mounted() {
-    const vm = this
-    setTimeout(function () {
-      vm.create_table_data()
-      vm.table_data_is_ready = true
-    }, 3000)
   }
 
 }

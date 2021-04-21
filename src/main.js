@@ -1,19 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
+// import mixin from './mixin.js'
 
 Vue.config.productionTip = false
 
 // global vars
-Vue.prototype.$api_data = {
-  data_ready_flag: false,
-  api_resp: null,
-  api_resp_: null,
-  vol_order: [],
-  vol_pct_change: {},
-  vol_pct_change_: {},
-  time: []
-}
+Vue.prototype.$backendServer = 'http://34.72.38.207/volume/market_summary'
+// Vue.mixin(mixin)
 
 new Vue ({
+    // mixins: [mixin],
     render: h => h(App),
 }).$mount('#app')

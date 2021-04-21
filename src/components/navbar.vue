@@ -16,7 +16,7 @@
       <div class="navbar-menu" :class="{ 'is-active': showNav }">
         <div class="navbar-end">
           <a class="navbar-item has-text-primary is-size-5">
-            Donate
+            <!-- Donate -->
           </a>
           <!-- <a class="navbar-item has-text-primary is-size-5">
             Page2
