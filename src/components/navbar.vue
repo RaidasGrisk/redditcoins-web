@@ -14,13 +14,13 @@
         </div>
       </div>
       <div class="navbar-menu" :class="{ 'is-active': showNav }">
-        <div class="navbar-start" style="padding-left: 1.4rem">
+        <div class="navbar-end">
           <a class="navbar-item has-text-primary is-size-5">
-            Page1
+            Donate
           </a>
-          <a class="navbar-item has-text-primary is-size-5">
+          <!-- <a class="navbar-item has-text-primary is-size-5">
             Page2
-          </a>
+          </a> -->
         </div>
       </div>
     </div>
@@ -28,9 +28,7 @@
 </template>
 
 <script>
-// import modal from './modal.vue'
-// import people from './people.vue'
-// import clients from './clients.vue'
+
 export default {
   name: 'navbar',
   components: {

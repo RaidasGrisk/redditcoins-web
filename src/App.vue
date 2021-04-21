@@ -3,6 +3,7 @@
     <navbar/>
     <hero/>
     <coinTable/>
+    <!-- <footer/> -->
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import navbar from './components/navbar.vue'
 import hero from './components/hero.vue'
 import coinTable from './components/coinTable.vue'
+// import footer from './components/footer.vue'
 
 export default {
   name: 'App',
@@ -17,6 +19,7 @@ export default {
     navbar,
     hero,
     coinTable,
+    // footer,
   }
 }
 </script>
@@ -30,7 +33,7 @@ export default {
 // https://coolors.co/ffbe0b-fb5607-ff006e-8338ec-3a86ff
 // https://coolors.co/
 // https://colors.muz.li/
-$primary: #8338EC;
+$primary: #05b169;
 $success: #280756;
 $info: #3A86FF;
 $warning: #FFBE0B;
@@ -58,12 +61,12 @@ $colors: (
 @import "~bulma";
 
 ::selection {
-    color: #FF1279;
-    background: gray;
+    color: #FFBE0B;
+    background: black;
 };
 
 body {
-  background-color: $black;
+  background-color: $white;
 }
 
  // fixing bug where spaced navbar extends screen

@@ -1,52 +1,63 @@
 <template>
   <section>
     <div class="section container">
-        <table class="table has-text-centered is-fullwidth" v-if="this.table_data_is_ready">
-            <thead>
-                <tr>
-                    <th>Coin</th>
-                    <th>Mentions</th>
-                    <th class="is-hidden-mobile">Change</th>
-                    <th>Mention chart</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item) in data" :key="item.id">
-                    <td>
-                      <div class="columns is-vcentered is-mobile">
-                        <div class="column has-text-right" style="min-width: 64px">
-                          <img :src="`/assets/crypto_icons/${item.coin.toLowerCase()}.png`">
-                        </div>
-                        <div class="column has-text-left">
-                          {{ item.coin }}
-                        </div>
+
+      <p class="title has-text-primary">
+        <!-- Coin table -->
+      </p>
+
+      <table class="table is-hoverable has-text-right is-fullwidth" v-if="this.table_data_is_ready">
+          <thead>
+              <tr>
+                  <th class="has-text-weight-light has-text-left">Coin</th>
+                  <th class="has-text-weight-light">Mentions</th>
+                  <th class="has-text-weight-light">Change</th>
+                  <th class="has-text-weight-light">Mention chart</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr v-for="(item) in data" :key="item.id">
+                  <td>
+                    <div class="columns is-vcentered is-mobile">
+                      <div class="column is-1 has-text-left">
+                        <img :src="`/assets/crypto_icons/${item.coin.toLowerCase()}.png`">
                       </div>
-                    </td>
-                    <td>{{ item.mentions }}</td>
-                    <td class="is-hidden-mobile" :class="item.change > 0 ? 'has-text-primary': 'has-text-danger'">
-                      {{ item.change }}%
-                    </td>
-                    <td>
-                      <trend
-                          :data=item.data
-                          gradientDirection="left"
-                          :gradient="item.change > 0 ? ['#8338EC', '#8338EC', '#8338EC']: ['#FF1279', '#FF1279', '#FF1279']"
-                          :padding="8"
-                          :radius="8"
-                          :stroke-width="5"
-                          stroke-linecap="butt"
-                          :auto-draw="true"
-                          :autoDrawDuration="1000"
-                          smooth>
-                      </trend>
-                    </td>
-                    <!-- and so on -->
-                </tr>
-            </tbody>
-        </table>
+                      <div class="column has-text-left">
+                        {{ item.coin }}
+                      </div>
+                    </div>
+                  </td>
+                  <td style="width: 100px;">
+                    <div class="columns has-text-right is-mobile">
+                      <div class="column">
+                        {{ item.mentions }}
+                      </div>
+                    </div>
+                  </td>
+                  <td class="has-text-right" :class="item.change > 0 ? 'has-text-primary': 'has-text-danger'" style="width: 100px;">
+                    {{ item.change }}%
+                  </td>
+                  <!-- This or the cart will not allign properly -->
+                  <td style="width: 200px;">
+                        <trend
+                            :data=item.data
+                            gradientDirection="left"
+                            :gradient="item.change > 0 ? ['#05b169', '#05b169', '#05b169']: ['#FF1279', '#FF1279', '#FF1279']"
+                            :padding="8"
+                            :radius="8"
+                            :stroke-width="4"
+                            stroke-linecap="butt"
+                            :auto-draw="true"
+                            :autoDrawDuration="1000"
+                            smooth>
+                        </trend>
+
+                  </td>
+                  <!-- and so on -->
+              </tr>
+          </tbody>
+      </table>
     </div>
-    {{this.$api_data.data_ready_flag}}
-    {{this.is_data_available}}
   </section>
 </template>
 
@@ -69,10 +80,11 @@ export default {
   methods: {
     create_table_data() {
       this.$api_data.vol_order.forEach((coin) => {
-        if (this.$api_data.api_resp_['cryptocurrency'][coin][0] > 0) {
+        let last_val = this.$api_data.api_resp_['cryptocurrency'][coin].slice(-1)[0]
+        if (last_val > 1) {
           this.data.push({
             'coin': coin,
-            'mentions': this.$api_data.api_resp_['cryptocurrency'][coin][0],
+            'mentions': last_val,
             'change': this.$api_data.vol_pct_change[coin][0],
             'data': this.$api_data.api_resp_['cryptocurrency'][coin]
           })

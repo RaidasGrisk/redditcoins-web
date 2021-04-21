@@ -1,7 +1,15 @@
 <template>
-  <section class="hero is-black">
+  <section class="hero is-white">
     <div class="hero-body has-text-left">
       <div class="section container">
+
+        <!-- <p class="title is-size-5 has-text-warning">
+          In the past 24 hours <br>
+        </p>
+        <p class="title is-size-4 has-text-primary">
+          Total reddit comments scanned: <label class="has-text-danger">10k</label> <br>
+          UTC time of last hourly data: <label class="has-text-danger">2021-04-01 10:00:00</label>
+        </p> <br> -->
 
         <div class="columns" v-if="this.data_ready_flag">
 
@@ -104,7 +112,7 @@ export default {
       // make an object with keys as coins and vals as last vol
       let vol_last = new Object()
       for (const [key, value] of Object.entries(obj)) {
-        vol_last[key] = value[0]
+        vol_last[key] = value.slice(-1)[0]
       }
       // sort by last vol
       let ordered = Object.keys(vol_last).sort(function(a, b) {
@@ -118,7 +126,7 @@ export default {
         let vals = this.$api_data.api_resp_.cryptocurrency[coin]
         let first = vals[0]
         let last = vals[vals.length - 1]
-        let pct_change = Math.round((last / first - 1) * 100) / 100
+        let pct_change = Math.round((last / first - 1) * 100)
         this.$api_data.vol_pct_change[coin] = [pct_change]
         if (first > 1 && last > 1) {
           this.$api_data.vol_pct_change_[coin] = [pct_change]
