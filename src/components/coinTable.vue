@@ -19,7 +19,7 @@
               <tr v-for="(item) in this.get_table_data" :key="item.id">
                   <td>
                     <div class="columns is-vcentered is-mobile">
-                      <div class="column is-1 has-text-left">
+                      <div class="column is-narrow has-text-left">
                         <img :src="`/assets/crypto_icons/${item.coin.toLowerCase()}.png`">
                       </div>
                       <div class="column has-text-left">
