@@ -15,7 +15,7 @@
             </a>
           </div> -->
 
-          <div class="box is-clickable disable-select">
+          <div class="box is-clickable disable-select is-size-7-mobile">
             <!-- headers -->
             <!-- make sure col classes of headers correspond with classes
             of rows, so that all cols align properly -->

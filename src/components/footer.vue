@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer has-background-black">
+  <footer class="footer has-background-black is-size-7-mobile">
     <!-- style="border-top: 2px solid #F0F0F0;" -->
     <div class="container">
       <div class="content has-text-centered">
