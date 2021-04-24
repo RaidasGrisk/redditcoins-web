@@ -3,15 +3,15 @@
     <navbar/>
     <hero/>
     <coinTable/>
-    <!-- <footer/> -->
+    <footer_/>
   </div>
 </template>
 
 <script>
 import navbar from './components/navbar.vue'
 import hero from './components/hero.vue'
-import coinTable from './components/coinTable.vue'
-// import footer from './components/footer.vue'
+import coinTable from './components/coinTable_.vue'
+import footer_ from './components/footer.vue'
 
 export default {
   name: 'App',
@@ -19,7 +19,7 @@ export default {
     navbar,
     hero,
     coinTable,
-    // footer,
+    footer_,
   }
 }
 </script>
@@ -66,7 +66,7 @@ $colors: (
 };
 
 body {
-  background-color: $white;
+  background-color: #f6f9fc;
 }
 
  // fixing bug where spaced navbar extends screen

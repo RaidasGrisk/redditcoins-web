@@ -5,7 +5,7 @@
       <p class="title has-text-primary">
         <!-- Coin table -->
       </p>
-
+      <div class="box is-clickable disable-select">
       <table class="table is-hoverable has-text-right is-fullwidth">
           <thead>
               <tr>
@@ -55,6 +55,7 @@
               </tr>
           </tbody>
       </table>
+    </div>
     </div>
   </section>
 </template>

@@ -79,7 +79,7 @@ export default {
         let last = vals[vals.length - 1]
         let pct_change = Math.round((last / first - 1) * 100)
         this.vol_pct_change[coin] = [pct_change]
-        if (first > 1 && last > 1) {
+        if (first >= 1 && last >= 1) {
           this.vol_pct_change_[coin] = [pct_change]
         }
       }

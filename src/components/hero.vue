@@ -1,5 +1,5 @@
 <template>
-  <section class="hero is-white">
+  <section class="hero">
     <div class="hero-body has-text-left">
       <div class="section container">
 
