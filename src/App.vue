@@ -10,8 +10,8 @@
 <script>
 import navbar from './components/navbar.vue'
 import hero from './components/hero.vue'
-import coinTable from './components/coinTable_.vue'
-import footer_ from './components/footer.vue'
+import coinTable from './components/coinTable.vue'
+import footer_ from './components/footer_.vue'
 
 export default {
   name: 'App',

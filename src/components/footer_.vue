@@ -20,7 +20,7 @@
 
           </div>
 
-          <div class="content has-text-info">
+          <!-- <div class="content has-text-info">
             Made with<br>
             <img src="/assets/other_icons/vue.png" alt="Logo" style="width:20px;"> &nbsp;
             <img src="/assets/other_icons/python.png" alt="Logo" style="width:24px;"> &nbsp;
@@ -28,7 +28,7 @@
             <img src="/assets/other_icons/docker.png" alt="Logo" style="width:24px;"> <br>
             <img src="/assets/other_icons/gcp.png" alt="Logo" style="width:24px;"> &nbsp;
             <img src="/assets/other_icons/nginx.png" alt="Logo" style="width:20px;">
-          </div>
+          </div> -->
 
         </div>
       </div>

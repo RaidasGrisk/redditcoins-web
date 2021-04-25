@@ -2,43 +2,61 @@
   <section>
     <div class="section container">
 
-      <p class="title has-text-primary">
-        <!-- Coin table -->
-      </p>
-      <div class="box is-clickable disable-select">
-      <table class="table is-hoverable has-text-right is-fullwidth">
-          <thead>
-              <tr>
-                  <th class="has-text-weight-light has-text-left">Coin</th>
-                  <th class="has-text-weight-light">Mentions</th>
-                  <th class="has-text-weight-light">Change</th>
-                  <th class="has-text-weight-light">Mention chart</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr v-for="(item) in this.get_table_data" :key="item.id">
-                  <td>
-                    <div class="columns is-vcentered is-mobile">
-                      <div class="column is-narrow has-text-left">
-                        <img :src="`/assets/crypto_icons/${item.coin.toLowerCase()}.png`">
-                      </div>
-                      <div class="column has-text-left">
-                        {{ item.coin }}
-                      </div>
-                    </div>
-                  </td>
-                  <td style="width: 100px;">
-                    <div class="columns has-text-right is-mobile">
-                      <div class="column">
-                        {{ item.mentions }}
-                      </div>
-                    </div>
-                  </td>
-                  <td class="has-text-right" :class="item.change > 0 ? 'has-text-primary': 'has-text-danger'" style="width: 100px;">
-                    {{ item.change }}%
-                  </td>
-                  <!-- This or the cart will not allign properly -->
-                  <td style="width: 200px;">
+      <!-- This to reduce size on desktop / tablet -->
+      <div class="columns is-centered">
+        <div class="column is-full is-full-tablet is-two-thirds-desktop">
+
+          <!-- <div class="column has-text-right">
+            <a class="button is-link is-light" target="_blank">
+              Hourly
+            </a>
+            <a class="button is-link is-light" target="_blank">
+              Daily
+            </a>
+          </div> -->
+
+          <!-- headers -->
+          <!-- make sure col classes of headers correspond with classes
+          of rows, so that all cols align properly -->
+          <div class="box has-text-weight-medium">
+            <div class="columns is-vcentered is-mobile">
+              <div class="column is-narrow has-text-left">
+                Coin
+              </div>
+              <div class="column has-text-left">
+              </div>
+              <div class="column is-narrow has-text-right">
+                Mentions
+              </div>
+              <div class="column is-narrow has-text-right" style="width: 100px;">
+                Change
+              </div>
+              <div class="column has-text-right is-3-mobile is-2-tablet is-2-desktop is-2-widescreen is-2-fullhd">
+                Trend
+              </div>
+            </div>
+          </div>
+
+          <div class="box is-clickable disable-select">
+
+            <!-- rows -->
+            <div v-for="(item) in this.get_table_data" :key="item.id">
+
+              <div class="columns is-vcentered is-mobile">
+                <div class="column is-narrow has-text-left">
+                  <img :src="`/assets/crypto_icons/${item.coin.toLowerCase()}.png`">
+                </div>
+                <div class="column has-text-left">
+                  {{ item.coin }}
+                </div>
+                <div class="column is-narrow has-text-right">
+                  {{ item.mentions }}
+                </div>
+                <div class="column is-narrow has-text-right" :class="item.change > 0 ? 'has-text-primary': 'has-text-danger'" style="width: 100px;">
+                  {{ item.change }}%
+                </div>
+                <div class="column has-text-right is-3-mobile is-2-tablet is-2-desktop is-2-widescreen is-2-fullhd">
+
                     <trend
                         :data=item.data
                         gradientDirection="left"
@@ -51,11 +69,13 @@
                         :autoDrawDuration="1000"
                         smooth>
                     </trend>
-                  </td>
-              </tr>
-          </tbody>
-      </table>
-    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 </template>
@@ -78,11 +98,11 @@ export default {
   },
   methods: {
 
-		imageUrl(coin) {
-      let path = `@/assets/crypto_icons/${coin.toLowerCase()}.png`
-      let default_path = `@/assets/crypto_icons/btc.png`
-			return path ? default_path : path
-		}
+		// imageUrl(coin) {
+    //   let path = `@/assets/crypto_icons/${coin.toLowerCase()}.png`
+    //   let default_path = `@/assets/crypto_icons/btc.png`
+		// 	return path ? default_path : path
+		// }
 
   },
 
@@ -96,8 +116,11 @@ export default {
             'coin': coin,
             'mentions': last_val,
             'change': this.vol_pct_change[coin][0],
-            'data': this.api_resp_['cryptocurrency'][coin]
+            'data': this.api_resp_['cryptocurrency'][coin],
+            // 'color': this.colors[coin]
           })
+        // console.log(this.colors)
+        // console.log(this.vol_pct_change)
         }
       })
       return data
