@@ -4,7 +4,7 @@
 
       <!-- This to reduce size on desktop / tablet -->
       <div class="columns is-centered" v-if="this.$store.state.data_ready_flag">
-        <div class="column is-full is-full-tablet is-two-thirds-desktop">
+        <div class="column is-full is-full-tablet is-half-desktop is-size-7-mobile">
 
           <!-- <div class="column has-text-right">
             <a class="button is-success is-light" target="_blank" v-on:click="this.buttonclick">
@@ -18,21 +18,21 @@
           <!-- headers -->
           <!-- make sure col classes of headers correspond with classes
           of rows, so that all cols align properly -->
-          <div class="box has-text-weight-medium">
+          <div class="box is-clickable disable-select has-text-weight-medium">
             <div class="columns is-vcentered is-mobile">
-              <div class="column is-narrow has-text-left">
+              <div class="column is-narrow has-text-left" style="min-width: 45px">
                 Coin
               </div>
               <div class="column has-text-left">
               </div>
-              <div class="column is-narrow has-text-right">
+              <div class="column is-narrow has-text-right" style="min-width: 40px">
                 Mentions
               </div>
-              <div class="column is-narrow has-text-right" style="width: 100px;">
+              <div class="column is-narrow has-text-right" style="min-width: 65px">
                 Change
               </div>
-              <div class="column has-text-right is-3-mobile is-2-tablet is-2-desktop is-2-widescreen is-2-fullhd">
-                Trend 24h
+              <div class="column has-text-right is-2-mobile is-2-tablet is-2-desktop is-2-widescreen is-2-fullhd">
+                Trend
               </div>
             </div>
           </div>
@@ -42,17 +42,18 @@
             <!-- rows -->
             <div v-for="(item) in this.get_table_data" :key="item.id">
 
+              <!-- Min width to align cols on mobile -->
               <div class="columns is-vcentered is-mobile">
                 <div class="column is-narrow has-text-left">
                   <img :src="`/assets/crypto_icons/${item.coin.toLowerCase()}.png`">
                 </div>
-                <div class="column has-text-left">
+                <div class="column has-text-left" style="min-width: 45px">
                   {{ item.coin }}
                 </div>
-                <div class="column is-narrow has-text-right">
+                <div class="column is-narrow has-text-right" style="min-width: 40px">
                   {{ item.mentions }}
                 </div>
-                <div class="column is-narrow has-text-right" :class="item.change > 0 ? 'has-text-primary': 'has-text-danger'" style="width: 100px;">
+                <div class="column is-narrow has-text-right" :class="item.change > 0 ? 'has-text-primary': 'has-text-danger'" style="min-width: 65px">
                   {{ item.change }}%
                 </div>
                 <div class="column has-text-right is-3-mobile is-2-tablet is-2-desktop is-2-widescreen is-2-fullhd">
@@ -105,7 +106,37 @@ export default {
 		// 	return path ? default_path : path
 		// }
 
+    getNumber(theNumber) {
+
+      // check if inf
+      if (theNumber == Infinity) {
+        return 'Inf'
+      } else {
+        return theNumber
+      }
+      //
+      // // add sign
+      // if (theNumber == Number.NEGATIVE_INFINITY) {
+      //     number = "-" + "Inf%"
+      // } else if (theNumber == Number.POSITIVE_INFINITY) {
+      //   number = "+" + "Inf%"
+      // } else if (theNumber > 0) {
+      //   number = "+" + theNumber + "%";
+      // } else {
+      //     number = theNumber.toString() + "%";
+      // }
+      //
+      // // make sure the length is same
+      // let missingChars = 5 - number.length
+      // number = '/'.repeat(missingChars) + number
+      // console.log(number.length)
+
+      // return number
+    }
+
   },
+
+
 
   computed: {
 
@@ -118,7 +149,7 @@ export default {
           data.push({
             'coin': coin,
             'mentions': last_val,
-            'change': this.$store.state.vol_pct_change[coin][0],
+            'change': this.getNumber(this.$store.state.vol_pct_change[coin][0]),
             'data': this.$store.state.data[subreddit][coin],
             'color': this.$store.state.colors[coin],
           })

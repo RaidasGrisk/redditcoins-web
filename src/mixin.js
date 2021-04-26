@@ -72,7 +72,6 @@ export default {
         // let last = vals[vals.length - 1]
         let prev_to_last = vals[vals.length - 2]
         let change = Math.round((last / prev_to_last - 1) * 100)
-        // console.log(data_subreddit[coin], last, prev_to_last, change)
         pct_change[coin] = [change]
         if (last > threshold && prev_to_last > threshold) {
           pct_change_[coin] = [change]

@@ -1,6 +1,6 @@
 <template>
-  <div class="box is-clickable disable-select">
-    <p class="title is-size-5 has-text-black">
+  <div class="box is-clickable disable-select is-size-7-mobile">
+    <p class="title is-size-5 is-size-7-mobile has-text-black">
       <span v-html="title"></span>
       <!-- {{title}} -->
     </p>
@@ -10,12 +10,12 @@
       </div>
       <div class="column has-text-left">
         <!-- https://cryptoicons.org/ -->
-        {{coin}} <br>
+          {{coin}} <br>
         <div :class="is_up ? 'has-text-primary': 'has-text-danger'">
           {{pct_change}} %
         </div>
       </div>
-      <div class="column has-text-right">
+      <div class="column has-text-right is-3-mobile is-4-tablet is-5-desktop is-5-widescreen is-5-fullhd">
         {{last_value}} mentions/h<br>
         <trend
             :data="data"
