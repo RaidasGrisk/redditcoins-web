@@ -20,7 +20,7 @@
         <trend
             :data="data"
             gradientDirection="left"
-            :gradient="['#808080', '#808080', '#808080']"
+            :gradient="[color, color, color]"
             :padding="8"
             :radius="8"
             :stroke-width="5"
@@ -50,7 +50,8 @@ export default {
     title: String,
     coin: String,
     pct_change: Number,
-    last_value: Number
+    last_value: Number,
+    color: String
   },
 
   data() {

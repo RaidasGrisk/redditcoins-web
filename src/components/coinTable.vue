@@ -3,11 +3,11 @@
     <div class="section container">
 
       <!-- This to reduce size on desktop / tablet -->
-      <div class="columns is-centered">
+      <div class="columns is-centered" v-if="this.$store.state.data_ready_flag">
         <div class="column is-full is-full-tablet is-two-thirds-desktop">
 
           <!-- <div class="column has-text-right">
-            <a class="button is-link is-light" target="_blank">
+            <a class="button is-success is-light" target="_blank" v-on:click="this.buttonclick">
               Hourly
             </a>
             <a class="button is-link is-light" target="_blank">
@@ -32,7 +32,7 @@
                 Change
               </div>
               <div class="column has-text-right is-3-mobile is-2-tablet is-2-desktop is-2-widescreen is-2-fullhd">
-                Trend
+                Trend 24h
               </div>
             </div>
           </div>
@@ -60,7 +60,7 @@
                     <trend
                         :data=item.data
                         gradientDirection="left"
-                        :gradient="item.change > 0 ? ['#05b169', '#05b169', '#05b169']: ['#FF1279', '#FF1279', '#FF1279']"
+                        :gradient="[item.color, item.color, item.color]"
                         :padding="8"
                         :radius="8"
                         :stroke-width="4"
@@ -83,11 +83,9 @@
 <script>
 
 import Trend from 'vuetrend';
-import mixin from '../mixin.js'
 
 export default {
   name: 'coinTable',
-    mixins: [mixin],
   components: {
     Trend
   },
@@ -98,6 +96,9 @@ export default {
   },
   methods: {
 
+    buttonclick() {
+      this.$store.dispatch('loadData')
+    },
 		// imageUrl(coin) {
     //   let path = `@/assets/crypto_icons/${coin.toLowerCase()}.png`
     //   let default_path = `@/assets/crypto_icons/btc.png`
@@ -107,20 +108,20 @@ export default {
   },
 
   computed: {
+
     get_table_data() {
       let data = []
-      this.vol_order.forEach((coin) => {
-        let last_val = this.api_resp_['cryptocurrency'][coin].slice(-1)[0]
+      this.$store.state.vol_order.forEach((coin) => {
+        let subreddit = Object.keys(this.$store.state.data)[0]
+        let last_val = this.$store.state.data[subreddit][coin].slice(-1)[0]
         if (last_val > 1) {
           data.push({
             'coin': coin,
             'mentions': last_val,
-            'change': this.vol_pct_change[coin][0],
-            'data': this.api_resp_['cryptocurrency'][coin],
-            // 'color': this.colors[coin]
+            'change': this.$store.state.vol_pct_change[coin][0],
+            'data': this.$store.state.data[subreddit][coin],
+            'color': this.$store.state.colors[coin],
           })
-        // console.log(this.colors)
-        // console.log(this.vol_pct_change)
         }
       })
       return data

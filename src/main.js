@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
-// import mixin from './mixin.js'
+import store from "@/store/store";
 
 Vue.config.productionTip = false
 
-// global vars
-Vue.prototype.$backendServer = 'http://34.72.38.207/volume/market_summary'
-// Vue.mixin(mixin)
-
 new Vue ({
-    // mixins: [mixin],
+    store,
     render: h => h(App),
+    created() {
+      store.dispatch('loadData')
+    }
 }).$mount('#app')

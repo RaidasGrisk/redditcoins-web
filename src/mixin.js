@@ -1,65 +1,53 @@
-import axios from 'axios'
-// import * as Vibrant from 'node-vibrant'
+import * as Vibrant from 'node-vibrant'
 
 // global mixin
 export default {
   name: 'mixins',
+  components: [Vibrant],
   data() {
     return {
-      // flag to indicate that the data is ready
-      data_ready_flag: false,
-      // raw api output
-      api_resp: null,
-      // refactored api outpu
-      api_resp_: null,
-      // array with coins orderd by last vol
-      vol_order: [],
-      // array with coins orderd by last vol (read below)
-      vol_order_: [],
-      // keys are coins values are [pct_change_over_whole_period]
-      vol_pct_change: {},
-      // same but excluding coins with vol lower than 1
-      vol_pct_change_: {},
-      // array with time
-      time: [],
-      //coin colors
-      // colors: {}
     }
   },
 
   methods: {
 
-    refactor_api_response() {
-
-      let api_resp = this.api_resp.data
-
+    get_api_data_time_array(data) {
       // get things that are same across all subs and coins
       // that is subreddits, coins and time
-      let subreddits = Object.keys(api_resp)
-      let coins = Object.keys(api_resp[subreddits[0]])
-      api_resp[subreddits[0]][coins[0]]['data'].forEach(obj => {
-        this.time.push(obj['time'])
+      let time = []
+      let subreddits = Object.keys(data)
+      let coins = Object.keys(data[subreddits[0]])
+      data[subreddits[0]][coins[0]]['data'].forEach(obj => {
+        time.push(obj['time'])
       })
 
       // reverse time
       // new then old -> old then new
-      this.time.reverse()
+      return time.reverse()
+    },
+
+    refactor_api_response(raw_data) {
+
+      // get things that are same across all subs and coins
+      // that is subreddits, coins and time
+      let subreddits = Object.keys(raw_data)
+      let coins = Object.keys(raw_data[subreddits[0]])
 
       // populate new refactor api response
-      let data = new Object()
+      let new_data = new Object()
       subreddits.forEach((subreddit) => {
-        data[subreddit] = {}
+        new_data[subreddit] = {}
         coins.forEach((coin) => {
-          data[subreddit][coin] = []
-          api_resp[subreddit][coin]['data'].forEach((time_obj) => {
-            data[subreddit][coin].push(time_obj['volume'])
+          new_data[subreddit][coin] = []
+          raw_data[subreddit][coin]['data'].forEach((time_obj) => {
+            new_data[subreddit][coin].push(time_obj['volume'])
           });
           // reverse volume
           // new then old -> old then new
-          data[subreddit][coin].reverse()
-        });
-      });
-      this.api_resp_ = data
+          new_data[subreddit][coin].reverse()
+        })
+      })
+      return new_data
     },
 
     order_dict_by_val(obj) {
@@ -75,42 +63,43 @@ export default {
       return ordered
     },
 
-    get_volume_pct_changes() {
-      for (const coin in this.api_resp_.cryptocurrency) {
-        let vals = this.api_resp_.cryptocurrency[coin]
-        let first = vals[0]
+    get_volume_pct_changes(data_subreddit, threshold = 1) {
+      let pct_change = {}
+      let pct_change_ = {}
+      for (const coin in data_subreddit) {
+        let vals = data_subreddit[coin]
         let last = vals[vals.length - 1]
-        let pct_change = Math.round((last / first - 1) * 100)
-        this.vol_pct_change[coin] = [pct_change]
-        if (first > 1 && last > 1) {
-          this.vol_pct_change_[coin] = [pct_change]
+        // let last = vals[vals.length - 1]
+        let prev_to_last = vals[vals.length - 2]
+        let change = Math.round((last / prev_to_last - 1) * 100)
+        // console.log(data_subreddit[coin], last, prev_to_last, change)
+        pct_change[coin] = [change]
+        if (last > threshold && prev_to_last > threshold) {
+          pct_change_[coin] = [change]
         }
       }
+      return [pct_change, pct_change_]
     },
 
-    // get_dominant_color_from_logos() {
-    //   for (const coin in this.api_resp_.cryptocurrency) {
-    //     let path = `/assets/crypto_icons/${coin.toLowerCase()}.png`
-    //     Vibrant.from(path).getPalette((err, palette) => {
-    //       this.colors[coin] = palette.Vibrant.hex
-    //     })
-    //   }
-    // }
+    get_dominant_color_from_logos(data_subreddit) {
+      let colors = {}
+      for (const coin in data_subreddit) {
+        let path = `/assets/crypto_icons/${coin.toLowerCase()}.png`
+        Vibrant.from(path).getPalette((err, palette) => {
+          try {
+            colors[coin] = palette.Vibrant.hex
+          } catch (err) {
+            colors[coin] = '#4a4a4a'
+            // console.log(`${coin} failed to fetch dominant color. There's no logo.png`)
+          }
+
+        })
+      }
+      return colors
+    }
 
   },
 
   mounted() {
-    axios
-      .get(this.$backendServer)
-      .then(response => {
-        this.api_resp = response
-        this.refactor_api_response()
-        this.get_volume_pct_changes()
-        this.vol_order = this.order_dict_by_val(this.api_resp_.cryptocurrency)
-        this.pct_order = this.order_dict_by_val(this.vol_pct_change)
-        this.pct_order_ = this.order_dict_by_val(this.vol_pct_change_)
-        // this.get_dominant_color_from_logos()
-        this.data_ready_flag = true
-      })
   }
 }
