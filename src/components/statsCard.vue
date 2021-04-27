@@ -26,7 +26,7 @@
             :stroke-width="5"
             stroke-linecap="butt"
             :auto-draw="true"
-            :autoDrawDuration="1000"
+            :autoDrawDuration="3000"
             smooth>
         </trend>
       </div>

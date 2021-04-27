@@ -90,8 +90,8 @@
           </div>
           <!-- {{this.$store.state.last_date}} -->
 
-          <div class="box is-clickable disable-select" style="padding: 0.75rem;">
-            <table class="table is-hoverable is-fullwidth is-narrow center">
+          <div class="box" style="padding: 0.75rem;">
+            <table class="table is-hoverable is-fullwidth is-narrow">
               <thead>
                 <tr>
                   <th>Coin</th>
@@ -119,16 +119,16 @@
                   </td>
                   <td class="has-text-right">
                     <trend
-                        style="max-width: 100px; min-width: 50px;"
+                        style="max-width: 100px; min-width: 50px; max-height: 50px"
                         :data=item.data
                         gradientDirection="left"
                         :gradient="[item.color, item.color, item.color]"
                         :padding="8"
                         :radius="20"
-                        :stroke-width="isMobile() ? 10: 5"
+                        :stroke-width="isMobile() ? 6: 5"
                         stroke-linecap="butt"
                         :auto-draw="true"
-                        :autoDrawDuration="1000"
+                        :autoDrawDuration="3000"
                         smooth>
                     </trend>
                   </td>
