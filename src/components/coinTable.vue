@@ -77,17 +77,18 @@
             <div class="buttons are-small is-centered">
               <button
                 class="button is-info is-outlined"
-                :class="{'is-loading is-disabled': this.$store.getters.isLoading}"
-                v-on:click="this.buttonclick">
+                :class="[{'is-loading is-disabled': this.$store.getters.isLoading}, {'is-focused': this.highlight_hourly}]"
+                v-on:click="this.getHourlyData">
                 Hourly
               </button>
               <button
                 class="button is-info is-outlined"
-                :class="{'is-loading is-disabled': this.$store.getters.isLoading}"
-                v-on:click="this.buttonclick">
+                :class="[{'is-loading is-disabled': this.$store.getters.isLoading}, {'is-focused': this.highlight_daily}]"
+                v-on:click="this.getDailyData">
                 Daily
               </button>
           </div>
+          <!-- {{this.$store.state.last_date}} -->
 
           <div class="box is-clickable disable-select" style="padding: 0.75rem;">
             <table class="table is-hoverable is-fullwidth is-narrow center">
@@ -154,12 +155,22 @@ export default {
   data() {
     return {
       table_data_created: false,
+      highlight_hourly: true,
+      highlight_daily: false,
     }
   },
   methods: {
 
-    buttonclick() {
-      this.$store.dispatch('loadData')
+    getHourlyData() {
+      this.$store.dispatch('loadData', {gran: 'hourly'})
+      this.highlight_daily = false
+      this.highlight_hourly = true
+    },
+
+    getDailyData() {
+      this.$store.dispatch('loadData', {gran: 'daily'})
+      this.highlight_hourly = false
+      this.highlight_daily = true
     },
 
     formatNumber(theNumber) {

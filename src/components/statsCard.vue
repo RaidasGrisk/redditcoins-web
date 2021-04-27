@@ -11,12 +11,12 @@
       <div class="column has-text-left is-size-7-mobile">
         <!-- https://cryptoicons.org/ -->
           {{coin}} <br>
-        <div :class="is_up ? 'has-text-primary': 'has-text-danger'" class="is-size-7-mobile">
+        <div :class="pct_change >= 0 ? 'has-text-primary': 'has-text-danger'" class="is-size-7-mobile">
           {{pct_change}} %
         </div>
       </div>
       <div class="column has-text-right is-size-7-mobile">
-        {{last_value}} mentions/h <br>
+        {{last_value}} mentions <br>
         <trend
             :data="data"
             gradientDirection="left"
@@ -58,12 +58,15 @@ export default {
     return {
       // https://cryptoicons.org/
       // coin_logo_url: `https://cryptoicons.org/api/color/${this.coin.toLowerCase()}/30`
-      coin_logo_url: `/assets/crypto_icons/${this.coin.toLowerCase()}.png`,
-      is_up: this.pct_change >= 0
+      // coin_logo_url: `/assets/crypto_icons/${this.coin.toLowerCase()}.png`,
+      // is_up: this.pct_change >= 0
     }
   },
 
-  methods: {
+  computed: {
+    coin_logo_url() {
+      return `/assets/crypto_icons/${this.coin.toLowerCase()}.png`
+    }
   }
 }
 </script>

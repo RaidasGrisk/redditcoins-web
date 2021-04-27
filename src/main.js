@@ -8,6 +8,6 @@ new Vue ({
     store,
     render: h => h(App),
     created() {
-      store.dispatch('loadData')
+      store.dispatch('loadData', {'gran': 'hourly'})
     }
 }).$mount('#app')

@@ -19,7 +19,7 @@
           <div class="column">
             <statsCard
               :data="this.$store.state.data.cryptocurrency[this.$store.state.vol_order[0]]"
-              title="Top volume 1st (1h)"
+              title="Top volume 1st"
               :coin="this.$store.state.vol_order[0]"
               :pct_change="this.$store.state.vol_pct_change[this.$store.state.vol_order[0]].slice(-1)[0]"
               :last_value="this.$store.state.data.cryptocurrency[this.$store.state.vol_order[0]].slice(-1)[0]"
@@ -29,7 +29,7 @@
           <div class="column">
             <statsCard
               :data="this.$store.state.data.cryptocurrency[this.$store.state.vol_order[1]]"
-              title="Top volume 2nd (1h)"
+              title="Top volume 2nd"
               :coin="this.$store.state.vol_order[1]"
               :pct_change="this.$store.state.vol_pct_change[this.$store.state.vol_order[1]].slice(-1)[0]"
               :last_value="this.$store.state.data.cryptocurrency[this.$store.state.vol_order[1]].slice(-1)[0]"
@@ -39,7 +39,7 @@
           <div class="column">
             <statsCard
               :data="this.$store.state.data.cryptocurrency[this.$store.state.pct_order_[0]]"
-              title="Top % growth (1h)"
+              title="Top % growth"
               :coin="this.$store.state.pct_order_[0]"
               :pct_change="this.$store.state.vol_pct_change[this.$store.state.pct_order_[0]].slice(-1)[0]"
               :last_value="this.$store.state.data.cryptocurrency[this.$store.state.pct_order_[0]].slice(-1)[0]"

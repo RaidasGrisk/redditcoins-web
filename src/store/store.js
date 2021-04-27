@@ -7,7 +7,8 @@ import mixin from '../mixin'
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
 
-Vue.axios.defaults.baseURL = "http://34.72.38.207/volume/market_summary";
+// Vue.axios.defaults.baseURL = "http://34.72.38.207/volume/market_summary";
+Vue.prototype.baseURL = "http://34.72.38.207/volume/market_summary"
 
 export default new Vuex.Store({
   state: {
@@ -29,6 +30,8 @@ export default new Vuex.Store({
     vol_pct_change_: {},
     // array with time
     time: [],
+    // last date
+    last_date: null,
     // colors
     colors: {
       '1INCH': "#4a4a4a",
@@ -102,9 +105,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    loadData({commit}) {
+    loadData({commit}, gran) {
       this.state.data_ready_flag = false
-      Vue.axios.get().then(result => {
+      Vue.axios.get(
+        Vue.prototype.baseURL,
+        {params: gran}
+      ).then(result => {
         commit('SAVE_DATA', result)
         this.state.data_ready_flag = true
         this.state.page_loaded = true
@@ -148,6 +154,9 @@ export default new Vuex.Store({
       state.pct_order = pct_order
       state.pct_order_ = pct_order_
       // console.log('vol_order', vol_pct_change_, pct_order_)
+
+      // set date
+      state.last_date = time[time.length -1] + ' UTC'
 
       // let colors = state.colors
       // colors = mixin.methods.get_dominant_color_from_logos(data.cryptocurrency)
