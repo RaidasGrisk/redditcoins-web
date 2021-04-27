@@ -12,6 +12,8 @@ Vue.axios.defaults.baseURL = "http://34.72.38.207/volume/market_summary";
 export default new Vuex.Store({
   state: {
     // flag to indicate that the data is ready
+    page_loaded: false,
+    // flag to indicate that the data is ready
     data_ready_flag: false,
     // raw api output
     raw_data: null,
@@ -101,8 +103,11 @@ export default new Vuex.Store({
   },
   actions: {
     loadData({commit}) {
+      this.state.data_ready_flag = false
       Vue.axios.get().then(result => {
         commit('SAVE_DATA', result)
+        this.state.data_ready_flag = true
+        this.state.page_loaded = true
       }).catch(error => {
         throw new Error(`API ${error}`)
       })
@@ -148,8 +153,12 @@ export default new Vuex.Store({
       // colors = mixin.methods.get_dominant_color_from_logos(data.cryptocurrency)
       // console.log(colors)
       // state.colors = colors
-
-      state.data_ready_flag = true
     },
+  },
+
+  getters: {
+    isLoading: state => {
+      return !state.data_ready_flag
+    }
   },
 })

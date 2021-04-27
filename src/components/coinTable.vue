@@ -1,34 +1,30 @@
 <template>
   <section>
     <div class="section container">
+<!--
+      <div class="columns is-centered is-size-7-mobile" v-if="this.$store.state.data_ready_flag">
+        <div class="column is-full is-full-tablet is-two-fifths-desktop">
 
-      <!-- This to reduce size on desktop / tablet -->
-      <div class="columns is-centered" v-if="this.$store.state.data_ready_flag">
-        <div class="column is-full is-full-tablet is-half-desktop is-size-7-mobile">
-
-          <!-- <div class="column has-text-right">
+          <div class="column has-text-right">
             <a class="button is-success is-light" target="_blank" v-on:click="this.buttonclick">
               Hourly
             </a>
             <a class="button is-link is-light" target="_blank">
               Daily
             </a>
-          </div> -->
+          </div>
 
-          <!-- headers -->
-          <!-- make sure col classes of headers correspond with classes
-          of rows, so that all cols align properly -->
           <div class="box is-clickable disable-select has-text-weight-medium">
             <div class="columns is-vcentered is-mobile">
-              <div class="column is-narrow has-text-left" style="min-width: 45px">
+              <div class="column is-narrow has-text-left">
                 Coin
               </div>
               <div class="column has-text-left">
               </div>
-              <div class="column is-narrow has-text-right" style="min-width: 40px">
+              <div class="column is-narrow has-text-right">
                 Mentions
               </div>
-              <div class="column is-narrow has-text-right" style="min-width: 65px">
+              <div class="column is-narrow has-text-right">
                 Change
               </div>
               <div class="column has-text-right is-2-mobile is-2-tablet is-2-desktop is-2-widescreen is-2-fullhd">
@@ -39,10 +35,8 @@
 
           <div class="box is-clickable disable-select">
 
-            <!-- rows -->
             <div v-for="(item) in this.get_table_data" :key="item.id">
 
-              <!-- Min width to align cols on mobile -->
               <div class="columns is-vcentered is-mobile">
                 <div class="column is-narrow has-text-left">
                   <img :src="`/assets/crypto_icons/${item.coin.toLowerCase()}.png`">
@@ -50,7 +44,7 @@
                 <div class="column has-text-left" style="min-width: 45px">
                   {{ item.coin }}
                 </div>
-                <div class="column is-narrow has-text-right" style="min-width: 40px">
+                <div class="column is-narrow has-text-right" style="min-width: 45px">
                   {{ item.mentions }}
                 </div>
                 <div class="column is-narrow has-text-right" :class="item.change > 0 ? 'has-text-primary': 'has-text-danger'" style="min-width: 65px">
@@ -73,6 +67,73 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="columns is-centered is-size-7-mobile" v-if="this.$store.state.page_loaded">
+        <div class="column is-full is-full-tablet is-two-fifths-desktop">
+
+            <div class="buttons are-small is-centered">
+              <button
+                class="button is-info is-outlined"
+                :class="{'is-loading is-disabled': this.$store.getters.isLoading}"
+                v-on:click="this.buttonclick">
+                Hourly
+              </button>
+              <button
+                class="button is-info is-outlined"
+                :class="{'is-loading is-disabled': this.$store.getters.isLoading}"
+                v-on:click="this.buttonclick">
+                Daily
+              </button>
+          </div>
+
+          <div class="box is-clickable disable-select" style="padding: 0.75rem;">
+            <table class="table is-hoverable is-fullwidth is-narrow center">
+              <thead>
+                <tr>
+                  <th>Coin</th>
+                  <th></th>
+                  <!-- <th class="has-text-weight-light light has-text-right"><abbr title="Mentions">Mentions</abbr></th> -->
+                  <!-- <th class="has-text-right"><abbr title="Change">Ch</abbr></th> -->
+                  <th class="has-text-right">Count</th>
+                  <th class="has-text-right">Change</th>
+                  <th class="has-text-right">Trend</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item) in this.get_table_data" :key="item.id">
+                  <td class="is-vcentered">
+                    <img :src="`/assets/crypto_icons/${item.coin.toLowerCase()}.png`">
+                  </td>
+                  <td class="is-vcentered">
+                    {{ item.coin }}
+                  </td>
+                  <td class="is-vcentered has-text-right">
+                    {{ item.mentions }}
+                  </td>
+                  <td class="is-vcentered has-text-right" :class="item.change > 0 ? 'has-text-primary': 'has-text-danger'" style="width: 100px;">
+                    {{ item.change }}%
+                  </td>
+                  <td class="has-text-right">
+                    <trend
+                        style="max-width: 100px; min-width: 50px;"
+                        :data=item.data
+                        gradientDirection="left"
+                        :gradient="[item.color, item.color, item.color]"
+                        :padding="8"
+                        :radius="20"
+                        :stroke-width="isMobile() ? 10: 5"
+                        stroke-linecap="butt"
+                        :auto-draw="true"
+                        :autoDrawDuration="1000"
+                        smooth>
+                    </trend>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -100,39 +161,22 @@ export default {
     buttonclick() {
       this.$store.dispatch('loadData')
     },
-		// imageUrl(coin) {
-    //   let path = `@/assets/crypto_icons/${coin.toLowerCase()}.png`
-    //   let default_path = `@/assets/crypto_icons/btc.png`
-		// 	return path ? default_path : path
-		// }
 
-    getNumber(theNumber) {
-
-      // check if inf
+    formatNumber(theNumber) {
       if (theNumber == Infinity) {
         return 'Inf'
       } else {
         return theNumber
       }
-      //
-      // // add sign
-      // if (theNumber == Number.NEGATIVE_INFINITY) {
-      //     number = "-" + "Inf%"
-      // } else if (theNumber == Number.POSITIVE_INFINITY) {
-      //   number = "+" + "Inf%"
-      // } else if (theNumber > 0) {
-      //   number = "+" + theNumber + "%";
-      // } else {
-      //     number = theNumber.toString() + "%";
-      // }
-      //
-      // // make sure the length is same
-      // let missingChars = 5 - number.length
-      // number = '/'.repeat(missingChars) + number
-      // console.log(number.length)
+    },
 
-      // return number
-    }
+    isMobile() {
+      if(/Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return true
+      } else {
+        return false
+      }
+    },
 
   },
 
@@ -149,7 +193,7 @@ export default {
           data.push({
             'coin': coin,
             'mentions': last_val,
-            'change': this.getNumber(this.$store.state.vol_pct_change[coin][0]),
+            'change': this.formatNumber(this.$store.state.vol_pct_change[coin][0]),
             'data': this.$store.state.data[subreddit][coin],
             'color': this.$store.state.colors[coin],
           })
@@ -167,4 +211,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+
+.table td {
+  border: none
+}
+.table th {
+  border: none
+}
+
 </style>

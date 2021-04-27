@@ -53,7 +53,7 @@ $colors: (
     "danger": ($danger, $danger-invert)
 );
 
-$size-7: 0.7rem;
+$size-7: 0.75rem;
 $sizes: $size-1 $size-2 $size-3 $size-4 $size-5 $size-6 $size-7;
 
 

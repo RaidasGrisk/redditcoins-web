@@ -1,28 +1,28 @@
 <template>
-  <div class="box is-clickable disable-select is-size-7-mobile">
-    <p class="title is-size-5 is-size-7-mobile has-text-black">
+  <div class="box is-clickable disable-select">
+    <p class="has-text-weight-bold">
       <span v-html="title"></span>
       <!-- {{title}} -->
     </p>
     <div class="columns is-gapless is-vcentered is-mobile">
-      <div class="column is-2 has-text-left">
+      <div class="column is-2 has-text-left mr-2">
         <img :src="this.coin_logo_url">
       </div>
-      <div class="column has-text-left">
+      <div class="column has-text-left is-size-7-mobile">
         <!-- https://cryptoicons.org/ -->
           {{coin}} <br>
-        <div :class="is_up ? 'has-text-primary': 'has-text-danger'">
+        <div :class="is_up ? 'has-text-primary': 'has-text-danger'" class="is-size-7-mobile">
           {{pct_change}} %
         </div>
       </div>
-      <div class="column has-text-right is-3-mobile is-4-tablet is-5-desktop is-5-widescreen is-5-fullhd">
-        {{last_value}} mentions/h<br>
+      <div class="column has-text-right is-size-7-mobile">
+        {{last_value}} mentions/h <br>
         <trend
             :data="data"
             gradientDirection="left"
             :gradient="[color, color, color]"
             :padding="8"
-            :radius="8"
+            :radius="20"
             :stroke-width="5"
             stroke-linecap="butt"
             :auto-draw="true"

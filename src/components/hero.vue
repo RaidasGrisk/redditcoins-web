@@ -15,7 +15,7 @@
         <!-- {{this.$store.state.data}} -->
         <!-- {{this.$store.state.vol_order}} -->
 
-        <div class="columns" v-if="this.$store.state.data_ready_flag">
+        <div class="columns" v-if="this.$store.state.page_loaded">
           <div class="column">
             <statsCard
               :data="this.$store.state.data.cryptocurrency[this.$store.state.vol_order[0]]"

@@ -63,7 +63,7 @@ export default {
       return ordered
     },
 
-    get_volume_pct_changes(data_subreddit, threshold = 1) {
+    get_volume_pct_changes(data_subreddit, threshold = 0) {
       let pct_change = {}
       let pct_change_ = {}
       for (const coin in data_subreddit) {
