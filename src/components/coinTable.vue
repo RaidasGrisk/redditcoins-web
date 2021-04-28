@@ -112,7 +112,7 @@
                         :stroke-width="isMobile() ? 6: 5"
                         stroke-linecap="butt"
                         :auto-draw="true"
-                        :autoDrawDuration="3000"
+                        :autoDrawDuration="1200"
                         smooth>
                     </trend>
                   </td>
