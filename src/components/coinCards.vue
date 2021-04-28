@@ -59,7 +59,6 @@ export default {
   },
   data() {
     return {
-      data_ready_flag: false
     }
   },
   methods: {

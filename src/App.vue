@@ -2,13 +2,16 @@
   <div>
     <navbar/>
     <transition name="fade" mode="out-in" appear>
-      <hero/>
+      <div>
+        <hero/>
+        <userPanel/>
+      </div>
     </transition>
     <transition name="fade" mode="out-in" appear>
-    <div style="transition-delay: 2s">
-      <coinCards/>
-      <coinTable/>
-    </div>
+      <div style="transition-delay: 2s">
+        <coinCards/>
+        <coinTable/>
+      </div>
     </transition>
     <footer_/>
   </div>
@@ -17,6 +20,7 @@
 <script>
 import navbar from './components/navbar.vue'
 import hero from './components/hero.vue'
+import userPanel from './components/userPanel.vue'
 import coinTable from './components/coinTable.vue'
 import coinCards from './components/coinCards.vue'
 import footer_ from './components/footer_.vue'
@@ -26,6 +30,7 @@ export default {
   components: {
     navbar,
     hero,
+    userPanel,
     coinCards,
     coinTable,
     footer_,
