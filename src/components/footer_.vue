@@ -1,10 +1,10 @@
 <template>
-  <footer class="footer has-background-black is-size-7-mobile">
+  <footer class="footer has-background-grey-darker is-size-7-mobile">
     <!-- style="border-top: 2px solid #F0F0F0;" -->
     <div class="container">
       <div class="content has-text-centered">
         <div class="section">
-          <div class="content has-text-info">
+          <div class="content has-text-black">
             <b>Reddit coins</b><br>
           </div>
           <div class="content">

@@ -1,8 +1,15 @@
 <template>
   <div>
     <navbar/>
-    <hero/>
-    <coinTable/>
+    <transition name="fade" mode="out-in" appear>
+      <hero/>
+    </transition>
+    <transition name="fade" mode="out-in" appear>
+    <div style="transition-delay: 2s">
+      <coinCards/>
+      <coinTable/>
+    </div>
+    </transition>
     <footer_/>
   </div>
 </template>
@@ -11,6 +18,7 @@
 import navbar from './components/navbar.vue'
 import hero from './components/hero.vue'
 import coinTable from './components/coinTable.vue'
+import coinCards from './components/coinCards.vue'
 import footer_ from './components/footer_.vue'
 
 export default {
@@ -18,6 +26,7 @@ export default {
   components: {
     navbar,
     hero,
+    coinCards,
     coinTable,
     footer_,
   }
@@ -35,9 +44,9 @@ export default {
 // https://colors.muz.li/
 $primary: #05b169;
 $success: #280756;
-$info: #3A86FF;
+$info: #647cec;
 $warning: #FFBE0B;
-$danger: #FF1279;  // FB5607
+$danger: #fc6404;  // FB5607
 $primary-invert: findColorInvert($primary);
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
@@ -83,5 +92,13 @@ body {
       min-height: calc(100vh - ( #{$navbar-height} + ( 2 * #{$navbar-padding-vertical} ) ) );
     }
   }
+}
+
+// transitions
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
