@@ -90,7 +90,7 @@
               <tbody>
                 <tr v-for="(item) in this.get_table_data" :key="item.id">
                   <td class="is-vcentered">
-                    <img :src="`/assets/crypto_icons/${item.coin.toLowerCase()}.png`">
+                    <img :src="getImgUrl(item.coin.toLowerCase())">
                   </td>
                   <td class="is-vcentered">
                     {{ item.coin }}
@@ -149,6 +149,17 @@ export default {
       } else {
         return theNumber
       }
+    },
+
+    getImgUrl(coin) {
+      var images = require.context('@/assets/crypto_icons', false, /\.png$/)
+      try {
+        return images('./' + coin + ".png")
+      }
+      catch (exception_var) {
+        return require('@/assets/crypto_icons/default.png')
+      }
+
     },
 
     isMobile() {

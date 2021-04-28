@@ -13,7 +13,7 @@
               <a href="https://www.reddit.com/r/CryptoCurrency/" target="blank" class="has-text-danger">
                 <div class="columns is-gapless is-vcentered is-mobile">
                   <div class="column is-1" style="min-width: 46px">
-                    <img src="/assets/other_icons/reddit_cryptocurrency.png" style="width:36px;height:36px;">
+                    <img src="@/assets/other_icons/reddit_cryptocurrency.png" style="width:36px;height:36px;">
                   </div>
                   <div class="column has-text-left is-size-3 is-size-4-mobile">
                     r/CryptoCurrency
@@ -33,7 +33,7 @@
                   “There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.”
                 </p> -->
                 <div class="subtitle">
-                  <div class="buttons are-small is-left">
+                  <div class="buttons are-normal is-left">
                     <button
                       class="button is-info is-outlined"
                       :class="[{'is-loading is-disabled': this.$store.getters.isLoading}, {'is-focused': this.highlight_hourly}]"

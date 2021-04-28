@@ -6,7 +6,7 @@
     </p>
     <div class="columns is-gapless is-vcentered is-mobile">
       <div class="column is-2 has-text-left mr-2">
-        <img :src="this.coin_logo_url">
+        <img :src="getImgUrl(coin.toLowerCase())">
       </div>
       <div class="column has-text-left is-size-7-mobile">
         <!-- https://cryptoicons.org/ -->
@@ -61,6 +61,19 @@ export default {
       // coin_logo_url: `/assets/crypto_icons/${this.coin.toLowerCase()}.png`,
       // is_up: this.pct_change >= 0
     }
+  },
+
+  methods : {
+    getImgUrl(coin) {
+      var images = require.context('@/assets/crypto_icons', false, /\.png$/)
+      try {
+        return images('./' + coin + ".png")
+      }
+      catch (exception_var) {
+        return require('@/assets/crypto_icons/default.png')
+      }
+
+    },
   },
 
   computed: {
