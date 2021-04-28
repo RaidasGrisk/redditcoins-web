@@ -14,7 +14,7 @@
 
               <a href="https://github.com/RaidasGrisk/reddit-coin-app" class="button is-black is-link" target="_blank">
                 <span class="icon">
-                  <img src="/assets/other_icons/GitHub-Mark-Light-64px.png" />
+                  <img src="@/assets/other_icons/GitHub-Mark-Light-64px.png" />
                 </span>
               </a>
 
