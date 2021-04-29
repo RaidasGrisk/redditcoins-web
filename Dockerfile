@@ -1,5 +1,5 @@
 # docker build -t vuejs-cookbook/dockerize-vuejs-app .
-# docker run -d -p 8080:8080 --rm --name dockerize-vuejs-app-1 vuejs-cookbook/dockerize-vuejs-app
+# docker run -d -p 80:80 --rm --name dockerize-vuejs-app-1 vuejs-cookbook/dockerize-vuejs-app
 
 
 FROM node:lts-alpine
@@ -22,5 +22,5 @@ COPY . .
 # build app for production with minification
 RUN npm run build
 
-EXPOSE 8080
+EXPOSE 80
 CMD [ "http-server", "dist" ]
