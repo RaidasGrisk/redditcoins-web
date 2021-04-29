@@ -1,5 +1,5 @@
 # docker build -t vuejs-cookbook/dockerize-vuejs-app .
-# docker run -it -p 80:80 --rm --name dockerize-vuejs-app-1 vuejs-cookbook/dockerize-vuejs-app
+# docker run -it -d -p 80:80 --rm --name dockerize-vuejs-app-1 vuejs-cookbook/dockerize-vuejs-app
 
 # build stage
 FROM node:lts-alpine as build-stage
