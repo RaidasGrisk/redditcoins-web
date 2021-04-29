@@ -8,7 +8,7 @@ Vue.use(Vuex);
 Vue.use(VueAxios, axios);
 
 // Vue.axios.defaults.baseURL = "http://34.72.38.207/volume/market_summary";
-Vue.prototype.baseURL = "http://34.72.38.207:8080/volume/market_summary"
+Vue.prototype.baseURL = "//34.72.38.207:8080/volume/market_summary"
 
 export default new Vuex.Store({
   state: {
