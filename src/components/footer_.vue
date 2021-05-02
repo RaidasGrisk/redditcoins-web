@@ -9,7 +9,7 @@
           </div>
           <div class="control">
             <div class="tags has-addons is-centered">
-              <a class="tag is-black" href="https://github.com/RaidasGrisk/reddit-to-db">reddit-to-db</a>
+              <a class="tag is-black" href="https://github.com/RaidasGrisk/reddit-to-db" target="blank">reddit-to-db</a>
               <span class="tag is-black">
                 <span class="icon">
                   <img src="@/assets/other_icons/GitHub-Mark-Light-64px.png" />
@@ -19,7 +19,7 @@
           </div><br>
           <div class="control">
             <div class="tags has-addons is-centered">
-              <a class="tag is-black" href="https://github.com/RaidasGrisk/reddit-coin-app">backend-api</a>
+              <a class="tag is-black" href="https://github.com/RaidasGrisk/reddit-coin-app" target="blank">backend-api</a>
               <span class="tag is-black">
                 <span class="icon">
                   <img src="@/assets/other_icons/GitHub-Mark-Light-64px.png" />
@@ -29,7 +29,7 @@
           </div><br>
             <div class="control is-centered">
               <div class="tags has-addons is-centered">
-                <a class="tag is-black" href="https://github.com/RaidasGrisk/reddit-coin-web">frontend</a>
+                <a class="tag is-black" href="https://github.com/RaidasGrisk/reddit-coin-web" target="blank">frontend</a>
                 <span class="tag is-black">
                   <span class="icon">
                     <img src="@/assets/other_icons/GitHub-Mark-Light-64px.png" />
