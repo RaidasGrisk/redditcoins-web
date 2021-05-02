@@ -1,75 +1,6 @@
 <template>
   <section>
     <div class="section container">
-<!--
-      <div class="columns is-centered is-size-7-mobile" v-if="this.$store.state.data_ready_flag">
-        <div class="column is-full is-full-tablet is-two-fifths-desktop">
-
-          <div class="column has-text-right">
-            <a class="button is-success is-light" target="_blank" v-on:click="this.buttonclick">
-              Hourly
-            </a>
-            <a class="button is-link is-light" target="_blank">
-              Daily
-            </a>
-          </div>
-
-          <div class="box is-clickable disable-select has-text-weight-medium">
-            <div class="columns is-vcentered is-mobile">
-              <div class="column is-narrow has-text-left">
-                Coin
-              </div>
-              <div class="column has-text-left">
-              </div>
-              <div class="column is-narrow has-text-right">
-                Mentions
-              </div>
-              <div class="column is-narrow has-text-right">
-                Change
-              </div>
-              <div class="column has-text-right is-2-mobile is-2-tablet is-2-desktop is-2-widescreen is-2-fullhd">
-                Trend
-              </div>
-            </div>
-          </div>
-
-          <div class="box is-clickable disable-select">
-
-            <div v-for="(item) in this.get_table_data" :key="item.id">
-
-              <div class="columns is-vcentered is-mobile">
-                <div class="column is-narrow has-text-left">
-                  <img :src="`/assets/crypto_icons/${item.coin.toLowerCase()}.png`">
-                </div>
-                <div class="column has-text-left" style="min-width: 45px">
-                  {{ item.coin }}
-                </div>
-                <div class="column is-narrow has-text-right" style="min-width: 45px">
-                  {{ item.mentions }}
-                </div>
-                <div class="column is-narrow has-text-right" :class="item.change > 0 ? 'has-text-primary': 'has-text-danger'" style="min-width: 65px">
-                  {{ item.change }}%
-                </div>
-                <div class="column has-text-right is-3-mobile is-2-tablet is-2-desktop is-2-widescreen is-2-fullhd">
-
-                    <trend
-                        :data=item.data
-                        gradientDirection="left"
-                        :gradient="[item.color, item.color, item.color]"
-                        :padding="8"
-                        :radius="8"
-                        :stroke-width="4"
-                        stroke-linecap="butt"
-                        :auto-draw="true"
-                        :autoDrawDuration="1000"
-                        smooth>
-                    </trend>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
 
       <div class="columns is-centered is-size-7-mobile" v-if="this.$store.state.page_loaded">
         <div class="column is-full is-full-tablet is-two-fifths-desktop">
@@ -84,7 +15,13 @@
                   <!-- <th class="has-text-right"><abbr title="Change">Ch</abbr></th> -->
                   <th class="has-text-right">Count</th>
                   <th class="has-text-right">Change</th>
-                  <th class="has-text-right">Trend</th>
+                  <th class="has-text-right">
+                    <div
+                      class="has-tooltip-info has-tooltip-multiline" :class="isMobile() ? `has-tooltip-left`: ``"
+                      data-tooltip="Trend shows the data points of last 24 periods (24 hours / 24 days).">
+                      Trend
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody>

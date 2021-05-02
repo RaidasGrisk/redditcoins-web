@@ -77,6 +77,7 @@ $sizes: $size-1 $size-2 $size-3 $size-4 $size-5 $size-6 $size-7;
 // $link-focus-border: $primary;
 // Import Bulma
 @import "~bulma";
+@import '~@creativebulma/bulma-tooltip/src/sass/index.sass';
 
 ::selection {
     color: #FFBE0B;
