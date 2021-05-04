@@ -16,9 +16,9 @@
         </div>
         <div class="navbar-menu" :class="{ 'is-active': showNav }">
           <div class="navbar-start" style="padding-left: 18px">
-            <!-- <a class="navbar-item has-text-info is-size-5">
-              API
-            </a> -->
+            <a class="navbar-item has-text-info is-size-5" href="https://redditcoins.app/api/docs">
+              API docs
+            </a>
             <a class="navbar-item has-text-info is-size-5" @click="showDonateModal = true">
               Donate
             </a>

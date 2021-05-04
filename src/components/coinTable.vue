@@ -17,7 +17,9 @@
                   <th class="has-text-right">Change</th>
                   <th class="has-text-right">
                     <div
-                      class="has-tooltip-info has-tooltip-multiline" :class="isMobile() ? `has-tooltip-left`: ``"
+                      class="has-tooltip-info has-tooltip-multiline has-tooltip-arrow"
+                      :class="isMobile() ? `has-tooltip-left`: ``"
+                      style="text-decoration-style: dashed; text-decoration-line: underline"
                       data-tooltip="Trend shows the data points of last 24 periods (24 hours / 24 days).">
                       Trend
                     </div>
