@@ -31,7 +31,7 @@
       <div class="card">
         <div class="card-content">
           <div class="content is-size-7-mobile">
-            <b>ETH address:</b><br> 0xd2dC502eE91a5A167C91dB1571923D3AA168C5CE <br><br>
+            <b>ETH address:</b><br> 0x864a0Baeb1cA7A45ADbF48700a4C96a8B8F03aB2 <br><br>
             <b>BTC address:</b><br> 1NLZU3UfYbC4hT4ayJc9n78e679khxFybJ
           </div>
         </div>
