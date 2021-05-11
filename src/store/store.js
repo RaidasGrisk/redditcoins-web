@@ -101,7 +101,8 @@ export default new Vuex.Store({
       XTZ: "#a4e404",
       YFI: "#046ce4",
       ZEC: "#ecb444",
-      ZRX: "#7f7f7f"
+      ZRX: "#7f7f7f",
+      SHIB: "#feb801",
     }
   },
   actions: {

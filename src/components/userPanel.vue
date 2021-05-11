@@ -45,8 +45,8 @@ export default {
   data() {
     return {
       table_data_created: false,
-      highlight_hourly: true,
-      highlight_daily: false,
+      highlight_hourly: false,
+      highlight_daily: true,
     }
   },
   methods: {
