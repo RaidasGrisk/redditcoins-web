@@ -34,7 +34,6 @@ export default new Vuex.Store({
     last_date: null,
     // colors
     colors: {
-      '1INCH': "#4a4a4a",
       AAVE: "#38b0c4",
       ADA: "#2f6fcf",
       ALGO: "#7f7f7f",
@@ -87,7 +86,6 @@ export default new Vuex.Store({
       SKL: "#4a4a4a",
       SNX: "#4a4a4a",
       STORJ: "#2484fc",
-      SUSHI: "#4a4a4a",
       TRON: "#7f7f7f",
       UMA: "#fc4c4c",
       UNI: "#fc047c",
@@ -103,6 +101,13 @@ export default new Vuex.Store({
       ZEC: "#ecb444",
       ZRX: "#7f7f7f",
       SHIB: "#feb801",
+      LTO: "#7eb5ff",
+      "1INCH": "#1d3350",
+      TRB: "#24f498",
+      SUSHI: "#b970ba",
+      ICP: "#27abe3",
+      IOTA: "#262626",
+      RLC: "#ffd901"
     }
   },
   actions: {
