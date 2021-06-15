@@ -107,7 +107,11 @@ export default new Vuex.Store({
       SUSHI: "#b970ba",
       ICP: "#27abe3",
       IOTA: "#262626",
-      RLC: "#ffd901"
+      RLC: "#ffd901",
+      KLAY: "#5d4e3c",
+      THETA: "#02ddfe",
+      KSM: "#020202",
+      CAKE: "#fb811d"
     }
   },
   actions: {
