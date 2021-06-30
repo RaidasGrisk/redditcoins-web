@@ -111,7 +111,8 @@ export default new Vuex.Store({
       KLAY: "#5d4e3c",
       THETA: "#02ddfe",
       KSM: "#020202",
-      CAKE: "#fb811d"
+      CAKE: "#fb811d",
+      MOON: "#d19c32"
     }
   },
   actions: {

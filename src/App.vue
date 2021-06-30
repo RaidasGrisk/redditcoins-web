@@ -9,6 +9,7 @@
     </transition>
     <transition name="fade" mode="out-in" appear>
       <div style="transition-delay: 2s">
+        <chart/>
         <coinCards/>
         <coinTable/>
       </div>
@@ -24,6 +25,7 @@ import userPanel from './components/userPanel.vue'
 import coinTable from './components/coinTable.vue'
 import coinCards from './components/coinCards.vue'
 import footer_ from './components/footer_.vue'
+import chart from './components/chart.vue'
 
 export default {
   name: 'App',
@@ -34,6 +36,7 @@ export default {
     coinCards,
     coinTable,
     footer_,
+    chart,
   }
 }
 </script>

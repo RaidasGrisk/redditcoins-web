@@ -95,6 +95,14 @@ export default {
         })
       }
       return colors
+    },
+
+    isMobile() {
+      if(/Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return true
+      } else {
+        return false
+      }
     }
 
   },
