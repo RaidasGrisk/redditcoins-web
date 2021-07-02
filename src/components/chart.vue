@@ -162,7 +162,7 @@ export default {
         .get(baseUrl + coin, {
           params: {
             start: '2021-04-15',
-            end: '2021-06-30',
+            end: this.date,
             ups: -999,
             submissions: true,
             comments: true,
@@ -271,6 +271,11 @@ export default {
     vm.$root.$on('openChart', () => {
       vm.openChartModal = true
     })
+
+    // set todays date to use it to fetch api response.
+    let date = new Date()
+    date.setDate(date.getDate()-1)
+    this.date = date.toISOString().slice(0, 10)
   }
 
 }
