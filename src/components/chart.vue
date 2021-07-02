@@ -219,23 +219,30 @@ export default {
           return // early exit if array is empty
       }
 
+      // get coins taht are already fetched
+      let finishedCoins = Object.keys(this.seriesData)
+
       // find the new coin in selected array
       // new coin can be appended to any place in the array
       // hence we cannot just pop the last item or something...
       // so lets comare two arrays and find the difference.
       // the difference will be the newly added coin
-      let lastSelectedCoin = this.selectedCoins.filter(x => !this.selectedCoins_.includes(x))[0]
+
+      // on mobile it works slightly different.
+      // you can select multiple new coins at once.
+      // this means, lastSelectedCoin can be multiple items.
+      let lastSelectedCoins = this.selectedCoins.filter(x => !this.selectedCoins_.includes(x))
       this.selectedCoins_ = this.selectedCoins
 
-      let finishedCoins = Object.keys(this.seriesData)
       // check in coin has already been fetched or selected coin is undefined
       // if so, lets not call the api again
-      if (!finishedCoins.includes(lastSelectedCoin) && !(lastSelectedCoin == undefined)) {
-        this.getCoinData(lastSelectedCoin)
-      } else {
-        this.updateChartSeries()
-      }
-
+      lastSelectedCoins.forEach(coin => {
+        if (!finishedCoins.includes(coin) && !(coin == undefined)) {
+          this.getCoinData(coin)
+        } else {
+          this.updateChartSeries()
+        }
+      })
     },
 
     stackChart () {
