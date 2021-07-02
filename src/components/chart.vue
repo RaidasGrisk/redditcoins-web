@@ -9,7 +9,7 @@
             <div class="columns">
               <div class="column">
                 <apexcharts
-                  :width="this.isMobile ? 300 : 470"
+                  :width="this.isMobile ? 320 : 470"
                   type="area"
                   :options="this.getOptions" :series="this.getSeries">
                 </apexcharts>
@@ -247,7 +247,7 @@ export default {
 
     stackChart () {
       this.options = {... this.options, ...{
-          chart: {
+          chart: {... this.options.chart,
             stacked: this.stackChart
           }
         }
