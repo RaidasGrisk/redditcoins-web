@@ -27,7 +27,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item) in this.get_table_data" :key="item.id">
+                <tr v-for="(item) in this.get_table_data" :key="item.id" @click="rowClick(item.coin)">
                   <td class="is-vcentered">
                     <img :src="getImgUrl(item.coin.toLowerCase())">
                   </td>
@@ -108,6 +108,12 @@ export default {
         return false
       }
     },
+
+    // what happens when we click a row
+    rowClick(coin) {
+      this.$root.$emit('selectACoin', coin)
+      this.$root.$emit('openChart')
+    }
 
   },
 

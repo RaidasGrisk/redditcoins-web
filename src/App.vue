@@ -81,6 +81,7 @@ $sizes: $size-1 $size-2 $size-3 $size-4 $size-5 $size-6 $size-7;
 // Import Bulma
 @import "~bulma";
 @import '~@creativebulma/bulma-tooltip/src/sass/index.sass';
+@import 'node_modules/bulma-switch/src/sass/index.sass';
 
 ::selection {
     color: #FFBE0B;

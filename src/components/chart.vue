@@ -1,45 +1,33 @@
 <template>
-  <div v-if="this.$store.state.page_loaded" class="section container">
-
-    <div class="buttons are-small is-left">
-     <button
-       class="button is-info is-outlined"
-       @click="openChartModal = true">
-       Open charts
-     </button>
-    </div>
+  <div v-if="this.$store.state.page_loaded">
 
     <modal v-if="openChartModal" @close="openChartModal = false; selectedCoins = []">
       <div class="card">
         <div class="card-content">
           <div class="content is-size-7-mobile">
-            <br>
+
             <div class="columns">
               <div class="column">
                 <apexcharts
-                  :width="this.isMobile ? 300: 470"
+                  :width="this.isMobile ? 300 : 470"
                   type="area"
                   :options="this.getOptions" :series="this.getSeries">
                 </apexcharts>
+                <div class="field">
+                  <input id="switch1" type="checkbox" class="switch is-rounded is-small is-info" v-model="stackChart">
+                  <label for="switch1">Stack data</label>
+                </div>
               </div>
 
               <div class="column">
                 <div class="select is-multiple is-size-7">
                   <!-- need to add mobile class to show dropdown
                   also think of how to position this on mobile -->
-                  <select multiple size="10" v-model="selectedCoins">
+                  <select multiple :size="this.isMobile ? 5 : 10" v-model="selectedCoins">
                     <option v-for="(coin) in this.$store.state.vol_order" :key="coin">
                       <option :value="coin">{{coin}}</option>
                     </option>
                   </select>
-                </div>
-
-                <div class="buttons are-small is-left">
-                 <button
-                   class="button is-info is-outlined"
-                   @click="this.changeBarType">
-                   bar type
-                 </button>
                 </div>
               </div>
 
@@ -70,10 +58,6 @@ export default {
   components: {
     apexcharts: VueApexCharts,
     modal,
-
-    // adding this here breaks the app
-    // is it because mixin is not proper mixin?
-    // mixin,
   },
 
   props: {
@@ -87,8 +71,10 @@ export default {
       openChartModal: false,
       isMobile: mixin.methods.isMobile(),
       selectedCoins: [],
+      selectedCoins_: [], // check selectedCoins watched for explanation
       seriesData: {},
       callingAPI: false,
+      stackChart: false,
 
       // chart options
       options: {
@@ -117,10 +103,15 @@ export default {
           horizontalAlign: 'left'
         },
         xaxis: {
+          labels: {
+              style: {
+                  fontSize: '0px'
+              }
+            },
           lines: {
             show: true
           },
-          categories: []
+          categories: null
         },
         grid: {
             show: true,
@@ -164,15 +155,6 @@ export default {
 
   methods: {
 
-    changeBarType() {
-      this.options = {... this.options, ...{
-          chart: {
-            stacked: !this.options.chart.stacked
-          }
-        }
-      }
-    },
-
     getCoinData(coin) {
       this.callingAPI = true
       let baseUrl = 'https://redditcoins.app/api/volume/cryptocurrency/'
@@ -180,7 +162,7 @@ export default {
         .get(baseUrl + coin, {
           params: {
             start: '2021-04-15',
-            end: '2021-06-29',
+            end: '2021-06-30',
             ups: -999,
             submissions: true,
             comments: true,
@@ -188,7 +170,6 @@ export default {
           }
         })
         .then(response => {
-
           // refactor api response
           // and pusht the data to seriesData
           let mentionData = []
@@ -198,12 +179,18 @@ export default {
             time.push(time_obj['time'])
           })
           this.seriesData[coin] = mentionData.reverse()
-          this.options = {... this.options, ...{
-              xaxis: {
-                categories: time.reverse()
+
+          // okay, so by default xaxis ticks are null
+          // set this once when fetching first api call
+          if (this.options.xaxis.categories == null) {
+            this.options = {... this.options, ...{
+                xaxis: {... this.options.xaxis,
+                  categories: time.reverse()
+                }
               }
             }
           }
+          console.log('fetched', coin)
           this.updateChartSeries()
         })
         .catch(error => {
@@ -228,16 +215,37 @@ export default {
 
       // check if coin data has already been downloaded
       // if coin is not downloaded already then call the api
-      let lastSelectedCoin = this.selectedCoins.slice(-1)[0]
-      let finishedCoins = Object.keys(this.seriesData)
+      if (this.selectedCoins === undefined || this.selectedCoins.length == 0) {
+          return // early exit if array is empty
+      }
 
-      if (!finishedCoins.includes(lastSelectedCoin)) {
+      // find the new coin in selected array
+      // new coin can be appended to any place in the array
+      // hence we cannot just pop the last item or something...
+      // so lets comare two arrays and find the difference.
+      // the difference will be the newly added coin
+      let lastSelectedCoin = this.selectedCoins.filter(x => !this.selectedCoins_.includes(x))[0]
+      this.selectedCoins_ = this.selectedCoins
+
+      let finishedCoins = Object.keys(this.seriesData)
+      // check in coin has already been fetched or selected coin is undefined
+      // if so, lets not call the api again
+      if (!finishedCoins.includes(lastSelectedCoin) && !(lastSelectedCoin == undefined)) {
         this.getCoinData(lastSelectedCoin)
       } else {
         this.updateChartSeries()
       }
 
     },
+
+    stackChart () {
+      this.options = {... this.options, ...{
+          chart: {
+            stacked: this.stackChart
+          }
+        }
+      }
+    }
 
   },
 
@@ -247,8 +255,24 @@ export default {
     },
     getSeries() {
       return this.series
-    }
+    },
+  },
+
+  mounted() {
+
+    // events to catch
+    // these can be braodcasted by other components:
+    // like coin cards or coinTable rows.
+    let vm = this
+    vm.$root.$on('selectACoin', (coin) => {
+      vm.selectedCoins = [coin]
+    })
+
+    vm.$root.$on('openChart', () => {
+      vm.openChartModal = true
+    })
   }
+
 }
 </script>
 

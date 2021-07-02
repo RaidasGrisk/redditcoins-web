@@ -1,5 +1,5 @@
 <template>
-  <div class="box is-clickable disable-select">
+  <div class="box is-clickable" @click="boxClick">
     <p class="has-text-weight-bold">
       <span v-html="title"></span>
       <!-- {{title}} -->
@@ -72,8 +72,13 @@ export default {
       catch (exception_var) {
         return require('@/assets/crypto_icons/default.png')
       }
-
     },
+
+    // what happens when we click a card
+    boxClick() {
+      this.$root.$emit('selectACoin', this.coin)
+      this.$root.$emit('openChart')
+    }
   },
 
   computed: {
