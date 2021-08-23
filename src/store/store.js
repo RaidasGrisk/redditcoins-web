@@ -112,7 +112,14 @@ export default new Vuex.Store({
       THETA: "#02ddfe",
       KSM: "#020202",
       CAKE: "#fb811d",
-      MOON: "#d19c32"
+      MOON: "#d19c32",
+      ERG: "#000000",
+      MIR: "#0b0e16",
+      CTSI: "#262626",
+      FTM: "#2a78ff",
+      LUNA: "#3c3e3c",
+      AVAX: "#bb5758",
+      ONE: "#186161"
     }
   },
   actions: {
