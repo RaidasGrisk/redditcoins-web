@@ -119,7 +119,13 @@ export default new Vuex.Store({
       FTM: "#2a78ff",
       LUNA: "#3c3e3c",
       AVAX: "#bb5758",
-      ONE: "#186161"
+      ONE: "#186161",
+      CKB: "#3BC38B",
+      SOL: "#912CB4",
+      QNT: "#5FE0D2",
+      HBAR: "#040404",
+      BUSD: "#F4BC0C",
+      GET: "#04C494"
     }
   },
   actions: {

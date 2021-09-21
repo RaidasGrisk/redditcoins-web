@@ -4,8 +4,8 @@
     <div class="container">
       <div class="content has-text-centered">
         <div class="section">
-          <div class="content has-text-black">
-            <b>Reddit coins</b><br>
+          <div class="content has-text-info">
+            <b>Reddit coins<br> source code</b><br>
           </div>
           <div class="control">
             <div class="tags has-addons is-centered">
@@ -36,7 +36,29 @@
                   </span>
                 </span>
               </div>
-            </div><br>
+            </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="content has-text-centered">
+          <div class="content has-text-info">
+            <b>Contact if you want to chat</b><br>
+            <a href="https://www.reddit.com/user/ioWxss6" target="blank" class="has-text-primary">
+              u/ioWxss6
+            </a><br>
+            <a href="https://www.reddit.com/user/ioWxss6_bot" target="blank" class="has-text-primary">
+              u/ioWxss6_bot
+            </a>
+          </div><br><br>
+          <div class="content has-text-warning">
+            <b>Donate if you want to <br>support the app </b><br>❤️
+          </div>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-half">
+            <donateCard/>
+            <br><br>
+          </div>
         </div>
       </div>
     </div>
@@ -44,8 +66,14 @@
 </template>
 
 <script>
+
+import donateCard from '@/components/donateCard'
+
 export default {
   name: 'footer',
+  components: {
+    donateCard
+  },
   data() {
     return {
     }
