@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" style="max-width: 800px; overflow-x: auto;">
     <div class="card-content">
       <div class="content is-size-7-mobile">
         <b>ETH:</b><br> 0x864a0Baeb1cA7A45ADbF48700a4C96a8B8F03aB2 <br><br>
