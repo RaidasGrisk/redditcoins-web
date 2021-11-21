@@ -126,7 +126,9 @@ export default {
       this.$store.state.vol_order.forEach((coin) => {
         let subreddit = Object.keys(this.$store.state.data)[0]
         let last_val = this.$store.state.data[subreddit][coin].slice(-1)[0]
-        if (last_val > 1) {
+        // filter out low volume coins?
+        // keep all except for 0 vol
+        if (last_val > 0) {
           data.push({
             'coin': coin,
             'mentions': last_val,

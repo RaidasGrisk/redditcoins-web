@@ -78,7 +78,6 @@ export default new Vuex.Store({
       NKN: "#4a4a4a",
       NMR: "#3f3fbf",
       NU: "#4a4a4a",
-      OGN: "#4a4a4a",
       OMG: "#7f7f7f",
       OXT: "#5c44bc",
       REN: "#4c4cb2",
@@ -125,7 +124,9 @@ export default new Vuex.Store({
       QNT: "#5FE0D2",
       HBAR: "#040404",
       BUSD: "#F4BC0C",
-      GET: "#04C494"
+      GET: "#04C494",
+      CRO: "#08276e",
+      OGN: "#1584FC",
     }
   },
   actions: {
