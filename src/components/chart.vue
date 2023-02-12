@@ -17,6 +17,9 @@
                   <input id="switch1" type="checkbox" class="switch is-rounded is-small is-info" v-model="stackChart">
                   <label for="switch1">Stack data</label>
                 </div>
+                <div style="min-height: 20px">
+                  <span v-if="this.callingAPI" class="loader"></span>
+                </div>
               </div>
 
               <div class="column">
@@ -158,10 +161,13 @@ export default {
     getCoinData(coin) {
       this.callingAPI = true
       let baseUrl = 'https://redditcoins.app/api/volume/cryptocurrency/'
+      let startDate = new Date()
+      startDate.setDate(startDate.getDate() - 365)
+      startDate = startDate.toISOString().slice(0, 10)
       axios
         .get(baseUrl + coin, {
           params: {
-            start: '2021-04-15',
+            start: startDate,
             end: this.date,
             ups: -999,
             submissions: true,
@@ -289,4 +295,19 @@ export default {
 </script>
 
 <style>
+
+.loader {
+  border: 26px solid #647cec; /* Light grey */
+  border-top: 26px solid #647cec; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>
