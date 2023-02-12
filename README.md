@@ -1,3 +1,8 @@
+# to redeploy
+build locally  
+push to repo  
+pull in server and move dist to nginx serving location
+
 # reddit-coin-web
 
 ## Project setup
