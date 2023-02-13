@@ -130,6 +130,7 @@ export default new Vuex.Store({
       PRO: "#03b1fe",
       OP: "#fd0000",
       MAGIC: '#fe0902',
+      RPL: '#fe7e26',
     }
   },
   actions: {
