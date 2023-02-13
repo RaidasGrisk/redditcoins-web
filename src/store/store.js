@@ -127,6 +127,9 @@ export default new Vuex.Store({
       GET: "#04C494",
       CRO: "#08276e",
       OGN: "#1584FC",
+      PRO: "#03b1fe",
+      OP: "#fd0000",
+      MAGIC: '#fe0902',
     }
   },
   actions: {
