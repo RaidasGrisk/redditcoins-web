@@ -70,7 +70,7 @@ export default new Vuex.Store({
       LRC: "#2cb4f4",
       LTC: "#807e7e",
       MANA: "#fc3458",
-      MATIC: "#2c6cec",
+      MATIC: "#8a02fe",
       MKR: "#1cac9c",
       NANO: "#4c94e4",
       NEM: "#4a4a4a",
