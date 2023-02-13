@@ -3,6 +3,14 @@ build locally
 push to repo  
 pull in server and move dist to nginx serving location
 
+```
+// this is really bad devops, but oh. Will refactor all of this someday.
+rm -r /home/mrraidas/nginx-certbot/data/nginx/www/
+mkdir /home/mrraidas/nginx-certbot/data/nginx/www/
+cp dist/* /home/mrraidas/nginx-certbot/data/nginx/www/
+goto nginx server folder and: docker-compose restart
+```
+
 # reddit-coin-web
 
 ## Project setup
