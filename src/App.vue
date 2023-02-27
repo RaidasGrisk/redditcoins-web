@@ -1,114 +1,48 @@
-<template>
-  <div>
-    <navbar/>
-    <transition name="fade" mode="out-in" appear>
-      <div>
-        <hero/>
-        <userPanel/>
-      </div>
-    </transition>
-    <transition name="fade" mode="out-in" appear>
-      <div style="transition-delay: 2s">
-        <chart/>
-        <coinCards/>
-        <coinTable/>
-      </div>
-    </transition>
-    <footer_/>
-  </div>
-</template>
+<script setup>
+import { ref } from 'vue'
+import { useStore } from 'vuex'
+import { Chart, registerables } from "chart.js";
+import { useIsMobile } from './utils'
 
-<script>
-import navbar from './components/navbar.vue'
-import hero from './components/hero.vue'
-import userPanel from './components/userPanel.vue'
-import coinTable from './components/coinTable.vue'
-import coinCards from './components/coinCards.vue'
+import header_ from './components/header_.vue'
 import footer_ from './components/footer_.vue'
-import chart from './components/chart.vue'
+import Intro from './components/Intro.vue'
+import ChartTable from './components/ChartTable.vue'
 
-export default {
-  name: 'App',
-  components: {
-    navbar,
-    hero,
-    userPanel,
-    coinCards,
-    coinTable,
-    footer_,
-    chart,
-  }
+Chart.register(...registerables);
+Chart.defaults.font.size = 10
+Chart.defaults.font.family = '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+
+const isMobile = useIsMobile()
+const store = useStore()
+
+const logoClick = async () => {
+  console.log('hello')
 }
+
 </script>
 
-<style lang="scss">
+<template>
+  <n-config-provider :theme="store.getters['theme/getTheme']" :theme-overrides="store.getters['theme/getThemeOverrides']">
+    <n-notification-provider>
+      <n-loading-bar-provider>
+        <n-layout>
+          <header_ @logoClick="logoClick" />
+          <n-layout-content :content-style="isMobile ? 'padding: 0.5em 1em 0.5em 1em;': 'padding: 5em 1em 5em 1em; max-width: 125vh; margin: 0 auto;'">
+            <Intro />
+            <br>
+            <n-divider />
+            <br>
+            <ChartTable />
+          </n-layout-content>
+        </n-layout>
+        <n-layout-footer bordered>
+          <footer_ />
+        </n-layout-footer>
+      </n-loading-bar-provider>
+    </n-notification-provider>
+  </n-config-provider>
+</template>
 
-// Import Bulma's core
-@import "~bulma/sass/utilities/_all";
-
-// Set your colors
-// https://coolors.co/ffbe0b-fb5607-ff006e-8338ec-3a86ff
-// https://coolors.co/
-// https://colors.muz.li/
-$primary: #05b169;
-$success: #280756;
-$info: #647cec;
-$warning: #FFBE0B;
-$danger: #fc6404;  // FB5607
-$primary-invert: findColorInvert($primary);
-
-// Setup $colors to use as bulma classes (e.g. 'is-twitter')
-$colors: (
-    "white": ($white, $black),
-    "black": ($black, $white),
-    "light": ($light, $light-invert),
-    "dark": ($dark, $dark-invert),
-    "primary": ($primary, $primary-invert),
-    "info": ($info, $info-invert),
-    "success": ($success, $success-invert),
-    "warning": ($warning, $warning-invert),
-    "danger": ($danger, $danger-invert)
-);
-
-$size-7: 0.75rem;
-$sizes: $size-1 $size-2 $size-3 $size-4 $size-5 $size-6 $size-7;
-
-
-// Links
-// $link: $primary;
-// $link-invert: $primary-invert;
-// $link-focus-border: $primary;
-// Import Bulma
-@import "~bulma";
-@import '~@creativebulma/bulma-tooltip/src/sass/index.sass';
-@import 'node_modules/bulma-switch/src/sass/index.sass';
-
-::selection {
-    color: #FFBE0B;
-    background: black;
-};
-
-body {
-  background-color: #f6f9fc;
-}
-
- // fixing bug where spaced navbar extends screen
- // https://github.com/jgthms/bulma/issues/2845
- // fix is here because must import bulma scss
-.hero {
-  &.is-fullheight-with-spaced-navbar {
-    @extend .is-fullheight-with-navbar;
-    @include from($tablet) {
-      min-height: calc(100vh - ( #{$navbar-height} + ( 2 * #{$navbar-padding-vertical} ) ) );
-    }
-  }
-}
-
-// transitions
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 1s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
+<style scoped>
 </style>
