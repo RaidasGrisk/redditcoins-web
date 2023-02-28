@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <n-collapse-transition :appear="true">
+  <n-collapse-transition :appear="false">
     <div>
       <n-text depth="2" strong style="font-size: 3em; font-weight: 1000;">
         Hi, 🙌 <br>

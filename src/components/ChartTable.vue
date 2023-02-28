@@ -29,6 +29,11 @@ const themeVars = useThemeVars()
 const loadingBar = useLoadingBar()
 const store = useStore()
 
+// modal stuff
+const modalChartOptions = JSON.parse(JSON.stringify(chartOptions))
+const showModal = ref(false)
+const selectedCoin = ref()
+
 const getData = async () => {
   const url = 'https://redditcoins.app/api/volume/market_summary?gran=daily'
   const response = await fetch(url, {
@@ -76,20 +81,26 @@ const getChartData = (mentions, time, color) => {
   }
 }
 
+const openModal = (coin) => {
+  selectedCoin.value = coin
+  showModal.value = true
+}
+
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 onMounted( async() => {
   loadingBar.start()
   await sleep(50)
-  data.value = refactorData(data_) //await getData()
+  data.value = refactorData(data_) //refactorData(await getData())
   loadingBar.finish()
 })
 
 </script>
 
 <template>
-    <div v-if="data">
-      <n-grid cols="5" style="max-width: 24em;" class="center">
+  <n-card style="max-width: 28em;" class="center">
+    <n-text :depth="3">
+      <n-grid cols="5">
         <n-grid-item>
         </n-grid-item>
          <n-grid-item>
@@ -105,11 +116,13 @@ onMounted( async() => {
            <b>TREND</b>
          </n-grid-item>
        </n-grid>
-       <br>
+     </n-text>
+     <br>
+     <div v-if="data">
       <div v-for="item in data">
-        <n-grid cols="5" style="max-width: 24em;" class="center">
+        <n-grid cols="5" class="row center-vertical" @click="openModal(item.coin)">
           <n-grid-item>
-            <img :src="getImageUrl(item.coin.toLowerCase())" />
+            <img :src="getImageUrl(item.coin.toLowerCase())" style="position: relative; top: 3px"/>
           </n-grid-item>
            <n-grid-item>
              {{ item.coin }}
@@ -120,25 +133,31 @@ onMounted( async() => {
            <n-grid-item>
              {{ item.change }}
            </n-grid-item>
-           <n-grid-item>
-             <LineChart :chartData="item.chart" :width="64" :height="32" :options="chartOptions" />
+           <n-grid-item style="position: relative; top: 6px">
+             <LineChart :chartData="item.chart" :width="64" :height="42" :options="chartOptions" />
            </n-grid-item>
          </n-grid>
        </div>
     </div>
     <div v-else>
-      <n-spin size="small" />
       <div v-for="_ in Array(20).fill(0)">
         <n-space justify="center" style="padding-bottom: 12px;">
-          <n-skeleton circle :width="26" size="small" />
-          <n-skeleton :width="64" :height="24" :sharp="false" size="small" />
-          <n-skeleton :width="64" :height="24" :sharp="false" size="small" />
-          <n-skeleton :width="64" :height="24" :sharp="false" size="small" />
-          <n-skeleton :width="64" :height="24" :sharp="false" size="small" />
+          <n-skeleton circle :width="32" size="small" />
+          <n-skeleton :width="46" :height="28" :sharp="false" size="small" />
+          <n-skeleton :width="46" :height="28" :sharp="false" size="small" />
+          <n-skeleton :width="46" :height="28" :sharp="false" size="small" />
+          <n-skeleton :width="96" :height="28" :sharp="false" size="small" />
         </n-space>
       </div>
     </div>
-  <!-- </div> -->
+  </n-card>
+
+  <n-modal v-model:show="showModal">
+    <n-card style="width: 35em" title="Modal" :bordered="true">
+      <LineChart :chartData="data.find(i => i.coin == selectedCoin).chart" :width="512" :height="465" :options="modalChartOptions" />
+    </n-card>
+  </n-modal>
+
 </template>
 
 <style>
@@ -146,6 +165,24 @@ onMounted( async() => {
 .center {
   margin: auto;
   width: 100%;
+}
+
+.center-vertical {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+.row:hover {
+  padding: 0.5em 0em 0.5em 0em;
+  background-color: v-bind(themeVars.closeColorHover);
+  transition: 0.2s;
 }
 
 </style>
