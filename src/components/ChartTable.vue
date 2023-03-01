@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import CoinCards from './CoinCards.vue'
 import { useThemeVars, useLoadingBar } from 'naive-ui'
 
 import { Chart, registerables } from 'chart.js'
@@ -56,8 +57,9 @@ const refactorData = (data) => {
       data_.push({
         'coin': coin,
         'mentions': mentions.at(-1),
-        'change': `${Math.round((mentions.at(-1) / mentions.at(-2) - 1) * 100)}%`,
-        'chart': getChartData(mentions, time, color)
+        'change': Math.round((mentions.at(-1) / mentions.at(-2) - 1) * 100),
+        'chart': getChartData(mentions, time, color),
+        'imageUrl': getImageUrl(coin.toLowerCase())
       })
     }
     // sort by mentions
@@ -98,6 +100,10 @@ onMounted( async() => {
 </script>
 
 <template>
+  <CoinCards
+    :data="data ? [data.at(0), data.at(1), data.at(2)] : []"
+    @cardClick="(coin) => openModal(coin)"
+  />
   <n-card style="max-width: 28em;" class="center">
     <n-text :depth="3">
       <n-grid cols="5">
@@ -122,16 +128,28 @@ onMounted( async() => {
       <div v-for="item in data">
         <n-grid cols="5" class="row center-vertical" @click="openModal(item.coin)">
           <n-grid-item>
-            <img :src="getImageUrl(item.coin.toLowerCase())" style="position: relative; top: 3px"/>
+            <img :src="item.imageUrl" style="position: relative; top: 3px"/>
           </n-grid-item>
            <n-grid-item>
              {{ item.coin }}
            </n-grid-item>
            <n-grid-item>
-             {{ item.mentions }}
+             <n-number-animation
+                :from="0"
+                :to="item.mentions"
+                :active="true"
+                :precision="0"
+              />
            </n-grid-item>
            <n-grid-item>
-             {{ item.change }}
+             <div :style="item.change > 0 ? 'color: ' + themeVars.successColor: 'color:' + themeVars.errorColor">
+               <n-number-animation
+                  :from="0"
+                  :to="item.change"
+                  :active="true"
+                  :precision="0"
+                />%
+            </div>
            </n-grid-item>
            <n-grid-item style="position: relative; top: 6px">
              <LineChart :chartData="item.chart" :width="64" :height="42" :options="chartOptions" />
