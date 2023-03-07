@@ -31,7 +31,7 @@ const logoClick = async () => {
           <n-layout-content :content-style="isMobile ? 'padding: 0.5em 1em 0.5em 1em;': 'padding: 5em 1em 5em 1em; max-width: 125vh; margin: 0 auto;'">
             <Intro />
             <br>
-            <n-divider />
+            <n-divider style="width: 20em; margin: auto;"/>
             <br>
             <ChartTable />
           </n-layout-content>
