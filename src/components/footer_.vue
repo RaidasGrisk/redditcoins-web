@@ -96,7 +96,10 @@ onMounted( async () => {
       </n-button>
 
       <n-text style="font-size: 1.5em; font-weight: 1000;">
-        Support by donating<br> 💙
+        Support by donating<br>
+        <n-tag round :bordered="false">
+          💙
+        </n-tag>
       </n-text>
 
       <n-modal v-model:show="showModal">

@@ -3,17 +3,15 @@
 </script>
 
 <template>
-  <n-collapse-transition :appear="false">
-    <div>
-      <n-text depth="2" strong style="font-size: 3em; font-weight: 1000;">
-        Hi, 🙌 <br>
-        I track coin mentions on <br>
-        <a class="rainbow" href="https://www.reddit.com/r/CryptoCurrency/" target="blank_" style="text-decoration:none;">
-          r/cryptocurrency
-        </a>
-      </n-text>
-    </div>
-  </n-collapse-transition>
+  <n-space justify="center" style="text-align: center;">
+    <n-text depth="2" strong style="font-size: 3em; font-weight: 1000;">
+      Hi, 🙌 <br>
+      I track <span class="rainbow">coin mentions</span> on <br>
+      <a href="https://www.reddit.com/r/CryptoCurrency/" target="blank_" style="text-decoration:none;">
+        r/cryptocurrency
+      </a>
+    </n-text>
+  </n-space>
 </template>
 
 <style>

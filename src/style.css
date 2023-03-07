@@ -8,3 +8,12 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+a {
+  color: #2080f0;
+  text-decoration: inherit;
+  transition: 1s;
+}
+a:hover {
+  color: #763ae7;
+}

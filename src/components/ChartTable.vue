@@ -25,7 +25,9 @@ const getImageUrl = (coin) => {
 // chart
 Chart.register(...registerables);
 
-const data = ref()
+const data = ref([])
+const gran = ref('daily')
+const isloading = ref(false)
 const themeVars = useThemeVars()
 const loadingBar = useLoadingBar()
 const store = useStore()
@@ -35,15 +37,30 @@ const modalChartOptions = JSON.parse(JSON.stringify(chartOptions))
 const showModal = ref(false)
 const selectedCoin = ref()
 
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
 const getData = async () => {
-  const url = 'https://redditcoins.app/api/volume/market_summary?gran=daily'
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  return await response.json()
+  isloading.value = true
+  loadingBar.start()
+  console.log(gran.value)
+  data.value = []
+  data.value = refactorData(await getData_()) // await response.json()
+  loadingBar.finish()
+  isloading.value = false
+}
+
+const getData_ = async () => {
+
+  // const url = `https://redditcoins.app/api/volume/market_summary?gran=${gran.value}`
+  // const response = await fetch(url, {
+  //   method: 'GET',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // })
+  // return await response.json()
+  await sleep(1000)
+  return data_
 }
 
 const refactorData = (data) => {
@@ -79,7 +96,6 @@ const getChartData = (mentions, time, color) => {
         pointRadius: 0,
       },
     ],
-
   }
 }
 
@@ -88,23 +104,43 @@ const openModal = (coin) => {
   showModal.value = true
 }
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
-
 onMounted( async() => {
-  loadingBar.start()
-  await sleep(50)
-  data.value = refactorData(data_) //refactorData(await getData())
-  loadingBar.finish()
+  await getData()
 })
 
 </script>
 
 <template>
+
+  <n-space vertical class="center-vertical">
+      <n-space>
+        <n-button
+          strong secondary
+          :loading="gran == 'daily' ? isloading: false"
+          :type="gran == 'daily' ? 'info' : 'tertiary'"
+          @click="(gran == 'daily') ? '' : (gran = 'daily', getData())"
+        >Daily</n-button>
+        <n-button
+          strong secondary
+          :loading="gran == 'hourly' ? isloading: false"
+          :type="gran == 'hourly' ? 'info' : 'tertiary'"
+          @click="(gran == 'hourly') ? '' : (gran = 'hourly', getData())"
+        >Hourly</n-button>
+      </n-space>
+      <n-text :depth="3">
+        2024-01-01
+      </n-text>
+  </n-space>
+  <br><br>
+
   <CoinCards
-    :data="data ? [data.at(0), data.at(1), data.at(2)] : []"
+    :data="data ? [data.at(0), data.at(1), data.at(2)] : [null, null, null]"
     @cardClick="(coin) => openModal(coin)"
   />
-  <n-card style="max-width: 28em;" class="center">
+
+  <br><br><br>
+
+  <n-card style="max-width: 28em; border-radius: 8px;" class="center">
     <n-text :depth="3">
       <n-grid cols="5">
         <n-grid-item>
@@ -124,7 +160,7 @@ onMounted( async() => {
        </n-grid>
      </n-text>
      <br>
-     <div v-if="data">
+     <div v-if="data.length">
       <div v-for="item in data">
         <n-grid cols="5" class="row center-vertical" @click="openModal(item.coin)">
           <n-grid-item>
