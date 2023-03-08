@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import CoinCards from './CoinCards.vue'
+import ApexChart from './ApexChart.vue'
 import { useThemeVars, useLoadingBar } from 'naive-ui'
 
 import { Chart, registerables } from 'chart.js'
@@ -206,11 +207,11 @@ onMounted( async() => {
     </div>
   </n-card>
 
-  <n-modal v-model:show="showModal">
-    <n-card style="width: 35em" title="Modal" :bordered="true">
-      <LineChart :chartData="data.find(i => i.coin == selectedCoin).chart" :width="512" :height="465" :options="modalChartOptions" />
-    </n-card>
-  </n-modal>
+  <ApexChart
+    :showModal="showModal"
+    @update:showModal="showModal = !showModal"
+    :coin="selectedCoin"
+  />
 
 </template>
 
