@@ -208,6 +208,7 @@ onMounted( async() => {
   </n-card>
 
   <ApexChart
+    :coinList="data.map(item => {return {label: item.coin, value: item.coin}})"
     :showModal="showModal"
     @update:showModal="showModal = !showModal"
     :coin="selectedCoin"

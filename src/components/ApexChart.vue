@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { useStore } from 'vuex'
 import { useThemeVars, useLoadingBar } from 'naive-ui'
 
 const chartOptions = {
@@ -70,25 +69,16 @@ const chartOptions = {
     },
   },
 }
+const selectedCoins = ref([])
 
 const data = ref([])
 const isloading = ref(false)
 const themeVars = useThemeVars()
 const loadingBar = useLoadingBar()
-const store = useStore()
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 const getData = async (coin) => {
-
-  // exit if data is already fetched
-  if (data.value.filter(item => item.name == coin).length) {
-    return
-  }
-
-  isloading.value = true
-  loadingBar.start()
-  console.log('getting', coin)
   //
   // let url = 'https://redditcoins.app/api/volume/cryptocurrency/'
   // let endDate = new Date().toISOString().slice(0, 10)
@@ -157,17 +147,33 @@ const getData = async (coin) => {
   const time = series.map(item => item.time)
   const volume = series.map(item => item.volume)
 
-  // by default xaxis ticks are null
-  // set this after the data fetch
-  if (!chartOptions.xaxis.categories) {
-    console.log('setting x axis', time.reverse())
-    chartOptions.xaxis.categories = time.reverse()
-  }
+  return [time, volume]
 
-  data.value.push({
-    'name': coin,
-    'data': volume,
-  })
+}
+
+const updateData = async (selectedCoins) => {
+
+  isloading.value = true
+  loadingBar.start()
+
+  const fetchedCoins = data.value.map(item => item.name)
+  for (let coinIdx in selectedCoins) {
+    let coin = selectedCoins[coinIdx]
+    if (!fetchedCoins.includes(coin)) {
+      const [time, volume] = await getData(coin)
+      data.value.push({
+        'name': coin,
+        'data': volume,
+      })
+      // by default xaxis ticks are null
+      // set this after the data fetch
+      if (!chartOptions.xaxis.categories) {
+        chartOptions.xaxis.categories = time.reverse()
+      }
+    } else {
+      console.log('Coin is in selectedCoins and is in fetchedCoins')
+    }
+  }
 
   loadingBar.finish()
   isloading.value = false
@@ -179,6 +185,7 @@ onMounted( async() => {
 
 const props = defineProps({
   showModal: {type: Boolean, default: false},
+  coinList: {type: Array, default: []},
   coin: {type: String, default: null},
 })
 
@@ -186,8 +193,10 @@ const props = defineProps({
 // the modal is opened, not closed.
 watch(() => props.showModal, async (current, previous) => {
   if (current && !previous) {
-    console.log('triggering wathcer')
-    await getData(props.coin)
+    if (!selectedCoins.value.includes(props.coin)) {
+      selectedCoins.value.push(props.coin)
+    }
+    await updateData(selectedCoins.value)
   }
 })
 
@@ -204,6 +213,15 @@ watch(() => props.showModal, async (current, previous) => {
         type="area"
         :options="chartOptions"
         :series="data"
+      />
+      <n-select
+        v-model:value="selectedCoins"
+        multiple
+        :options="props.coinList"
+        placement="bottom"
+        filterable
+        :loading="isloading"
+        @update:value="updateData"
       />
     </n-card>
   </n-modal>
