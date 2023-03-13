@@ -71,7 +71,9 @@ const chartOptions = {
 }
 const selectedCoins = ref([])
 
+const dataStore = ref({})
 const data = ref([])
+const stacked = ref(false)
 const isloading = ref(false)
 const themeVars = useThemeVars()
 const loadingBar = useLoadingBar()
@@ -79,8 +81,11 @@ const loadingBar = useLoadingBar()
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 const getData = async (coin) => {
-  //
-  // let url = 'https://redditcoins.app/api/volume/cryptocurrency/'
+
+  isloading.value = true
+  loadingBar.start()
+
+  // const url = 'https://redditcoins.app/api/volume/cryptocurrency/'
   // let endDate = new Date().toISOString().slice(0, 10)
   // let startDate = new Date()
   // startDate.setDate(startDate.getDate() - 10)
@@ -147,36 +152,57 @@ const getData = async (coin) => {
   const time = series.map(item => item.time)
   const volume = series.map(item => item.volume)
 
+  loadingBar.finish()
+  isloading.value = false
+
   return [time, volume]
 
 }
 
-const updateData = async (selectedCoins) => {
+const updateData = async () => {
 
-  isloading.value = true
-  loadingBar.start()
+  const dataStoreCoins = Object.keys(dataStore.value)
+  const chartCoins = data.value.map(item => item.name)
 
-  const fetchedCoins = data.value.map(item => item.name)
-  for (let coinIdx in selectedCoins) {
-    let coin = selectedCoins[coinIdx]
-    if (!fetchedCoins.includes(coin)) {
+  // loop over the selected coins
+  for (let coinIdx in selectedCoins.value) {
+    let coin = selectedCoins.value[coinIdx]
+
+    // fetch data if coin data not in dataStore
+    if (!dataStoreCoins.includes(coin)) {
       const [time, volume] = await getData(coin)
-      data.value.push({
+      dataStore.value[coin] = {
         'name': coin,
-        'data': volume,
-      })
+        'volume': volume
+      }
       // by default xaxis ticks are null
       // set this after the data fetch
-      if (!chartOptions.xaxis.categories) {
-        chartOptions.xaxis.categories = time.reverse()
+      if (time) {
+        if (!chartOptions.xaxis.categories) {
+          chartOptions.xaxis.categories = time.reverse()
+        }
       }
-    } else {
-      console.log('Coin is in selectedCoins and is in fetchedCoins')
+    }
+
+    // if coin was selected just now and
+    // is not in the data array, push it
+    if (!chartCoins.includes(coin)) {
+      data.value.push({
+        'name': coin,
+        'data': dataStore.value[coin].volume,
+      })
     }
   }
 
-  loadingBar.finish()
-  isloading.value = false
+  // make sure the data is filtered out of coins
+  // that are no longer selected
+  data.value = data.value.filter(
+    item => selectedCoins.value.includes(item.name)
+  )
+}
+
+const changeChartStack = () => {
+
 }
 
 onMounted( async() => {
@@ -196,7 +222,7 @@ watch(() => props.showModal, async (current, previous) => {
     if (!selectedCoins.value.includes(props.coin)) {
       selectedCoins.value.push(props.coin)
     }
-    await updateData(selectedCoins.value)
+    await updateData()
   }
 })
 
@@ -208,21 +234,30 @@ watch(() => props.showModal, async (current, previous) => {
       <template #header-extra>
         <n-spin size="small" :stroke="themeVars.infoColor" v-if="isloading" />
       </template>
+      <n-select
+        v-model:value="selectedCoins"
+        multiple
+        :options="props.coinList"
+        placement="bottom-start"
+        filterable
+        :loading="isloading"
+        @update:value="updateData"
+        :disabled="isloading"
+      />
       <apexchart
         v-if="data.length > 0"
         type="area"
         :options="chartOptions"
         :series="data"
       />
-      <n-select
-        v-model:value="selectedCoins"
-        multiple
-        :options="props.coinList"
-        placement="bottom"
-        filterable
-        :loading="isloading"
-        @update:value="updateData"
-      />
+      <n-switch v-model:value="stacked" @update:value="() => { chartOptions.chart.stacked = stacked }">
+        <template #checked>
+          Stacked
+        </template>
+        <template #unchecked>
+          Un-stacked
+        </template>
+      </n-switch>
     </n-card>
   </n-modal>
 </template>
