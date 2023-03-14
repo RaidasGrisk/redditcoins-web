@@ -52,16 +52,16 @@ const getData = async () => {
 
 const getData_ = async () => {
 
-  // const url = `https://redditcoins.app/api/volume/market_summary?gran=${gran.value}`
-  // const response = await fetch(url, {
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // })
-  // return await response.json()
-  await sleep(1000)
-  return data_
+  const url = `https://redditcoins.app/api/volume/market_summary?gran=${gran.value}`
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  return await response.json()
+  // await sleep(1000)
+  // return data_
 }
 
 const refactorData = (data) => {
@@ -128,9 +128,14 @@ onMounted( async() => {
           @click="(gran == 'hourly') ? '' : (gran = 'hourly', getData())"
         >Hourly</n-button>
       </n-space>
-      <n-text :depth="3">
-        2024-01-01
-      </n-text>
+      <div v-if="data.length">
+        <n-text :depth="3">
+          {{ data[0].chart.labels.at(-1) }}
+        </n-text>
+      </div>
+      <div v-else>
+        <n-skeleton :width="96" :height="20" :sharp="false" size="small" />
+      </div>
   </n-space>
   <br><br>
 

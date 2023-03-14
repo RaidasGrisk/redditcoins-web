@@ -55,7 +55,7 @@ const lookBackBlocks = ref(store.getters['settings/getBlockSpan'])
             </template>
           </n-button>
 
-          <n-button tertiary type="info" size="large">
+          <n-button tertiary type="info" size="large" tag="a" href="https://redditcoins.app/api/docs" target="_blank">
             <template #icon>
               <n-icon :color="themeVars.infoColor">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0"></path><path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0"></path><path d="M3 6v13"></path><path d="M12 6v13"></path><path d="M21 6v13"></path></g></svg>

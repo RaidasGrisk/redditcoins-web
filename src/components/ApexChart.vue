@@ -1,9 +1,8 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useThemeVars, useLoadingBar } from 'naive-ui'
 
-const chartOptions = {
-  // colors: ['#647cec', '#f4941c'],
+let chartOptions = {
   chart: {
     stacked: false,
     toolbar: {
@@ -69,10 +68,11 @@ const chartOptions = {
     },
   },
 }
-const selectedCoins = ref([])
 
-const dataStore = ref({})
-const data = ref([])
+
+const selectedCoins = ref([]) // multi select
+const dataStore = ref({}) // cache fetched data
+const data = ref([]) // data fed into the chart
 const stacked = ref(false)
 const isloading = ref(false)
 const themeVars = useThemeVars()
@@ -85,72 +85,72 @@ const getData = async (coin) => {
   isloading.value = true
   loadingBar.start()
 
-  // const url = 'https://redditcoins.app/api/volume/cryptocurrency/'
-  // let endDate = new Date().toISOString().slice(0, 10)
-  // let startDate = new Date()
-  // startDate.setDate(startDate.getDate() - 10)
-  // startDate = startDate.toISOString().slice(0, 10)
-  //
-  // const urlParams = `${coin}?start=${startDate}&end=${endDate}&ups=-999&submissions=true&comments=true&granularity=D`
-  // const response = await fetch(url + urlParams, {
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-type': 'application/json',
-  //   }
-  // })
-  // let series = await response.json()
-  // series = series.data
+  const url = 'https://redditcoins.app/api/volume/cryptocurrency/'
+  let endDate = new Date().toISOString().slice(0, 10)
+  let startDate = new Date()
+  startDate.setDate(startDate.getDate() - 180)
+  startDate = startDate.toISOString().slice(0, 10)
 
-  await sleep(500)
-  const series = [
-    {
-      "time": "2023-03-08",
-      "volume": 10
-    },
-    {
-      "time": "2023-03-07",
-      "volume": 9
-    },
-    {
-      "time": "2023-03-06",
-      "volume": 29
-    },
-    {
-      "time": "2023-03-05",
-      "volume": 7
-    },
-    {
-      "time": "2023-03-04",
-      "volume": 18
-    },
-    {
-      "time": "2023-03-03",
-      "volume": 19
-    },
-    {
-      "time": "2023-03-02",
-      "volume": 24
-    },
-    {
-      "time": "2023-03-01",
-      "volume": 25
-    },
-    {
-      "time": "2023-02-28",
-      "volume": 15
-    },
-    {
-      "time": "2023-02-27",
-      "volume": 14
-    },
-    {
-      "time": "2023-02-26",
-      "volume": 17
+  const urlParams = `${coin}?start=${startDate}&end=${endDate}&ups=-999&submissions=true&comments=true&granularity=D`
+  const response = await fetch(url + urlParams, {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json',
     }
-  ]
+  })
+  let series = await response.json()
+  series = series.data
+  //
+  // await sleep(500)
+  // const series = [
+  //   {
+  //     "time": "2023-03-08",
+  //     "volume": 10
+  //   },
+  //   {
+  //     "time": "2023-03-07",
+  //     "volume": 9
+  //   },
+  //   {
+  //     "time": "2023-03-06",
+  //     "volume": 29
+  //   },
+  //   {
+  //     "time": "2023-03-05",
+  //     "volume": 7
+  //   },
+  //   {
+  //     "time": "2023-03-04",
+  //     "volume": 18
+  //   },
+  //   {
+  //     "time": "2023-03-03",
+  //     "volume": 19
+  //   },
+  //   {
+  //     "time": "2023-03-02",
+  //     "volume": 24
+  //   },
+  //   {
+  //     "time": "2023-03-01",
+  //     "volume": 25
+  //   },
+  //   {
+  //     "time": "2023-02-28",
+  //     "volume": 15
+  //   },
+  //   {
+  //     "time": "2023-02-27",
+  //     "volume": 14
+  //   },
+  //   {
+  //     "time": "2023-02-26",
+  //     "volume": 17
+  //   }
+  // ]
 
-  const time = series.map(item => item.time)
-  const volume = series.map(item => item.volume)
+  const time = series.map(item => item.time).reverse()
+  const volume = series.map(item => item.volume).reverse()
 
   loadingBar.finish()
   isloading.value = false
@@ -177,9 +177,16 @@ const updateData = async () => {
       }
       // by default xaxis ticks are null
       // set this after the data fetch
+      // this is maddness, but the only way it works
+      // https://stackoverflow.com/a/73162215
       if (time) {
         if (!chartOptions.xaxis.categories) {
-          chartOptions.xaxis.categories = time.reverse()
+          chartOptions = { ...chartOptions, ...{
+              xaxis: {... chartOptions.xaxis,
+                categories: time
+              }
+            }
+          }
         }
       }
     }
@@ -200,14 +207,6 @@ const updateData = async () => {
     item => selectedCoins.value.includes(item.name)
   )
 }
-
-const changeChartStack = () => {
-
-}
-
-onMounted( async() => {
-
-})
 
 const props = defineProps({
   showModal: {type: Boolean, default: false},
@@ -245,12 +244,24 @@ watch(() => props.showModal, async (current, previous) => {
         :disabled="isloading"
       />
       <apexchart
-        v-if="data.length > 0"
         type="area"
         :options="chartOptions"
         :series="data"
       />
-      <n-switch v-model:value="stacked" @update:value="() => { chartOptions.chart.stacked = stacked }">
+      <n-switch
+        v-model:value="stacked"
+        @update:value="() => {
+          chartOptions = {
+            ... chartOptions,
+            ...{
+              chart: {
+                ... chartOptions.chart,
+                stacked: stacked
+              }
+            }
+          }
+        }"
+      >
         <template #checked>
           Stacked
         </template>
