@@ -19,7 +19,7 @@ import data_ from './data.json'
 const imagesUrl = import.meta.glob("../assets/crypto_logos/*.(png|PNG)", { as: 'url', eager: true })
 const getImageUrl = (coin) => {
   let coin_path = `../assets/crypto_logos/${coin}.png`
-  let coin_path_default = '/src/assets/crypto_logos/default.png'
+  let coin_path_default = '../assets/crypto_logos/default.png'
   return coin_path in imagesUrl ? imagesUrl[coin_path] : coin_path_default
 }
 
