@@ -28,7 +28,7 @@ Chart.register(...registerables);
 
 const data = ref([])
 const gran = ref('daily')
-const isloading = ref(false)
+const isloading = ref(true)
 const themeVars = useThemeVars()
 const loadingBar = useLoadingBar()
 const store = useStore()
@@ -81,7 +81,7 @@ const refactorData = (data) => {
       })
     }
     // sort by mentions
-    data_.sort((a, b) => b.mentions - a.mentions);
+    data_.sort((a, b) => b.mentions - a.mentions)
   }
   return data_
 }
@@ -140,7 +140,11 @@ onMounted( async() => {
   <br><br>
 
   <CoinCards
-    :data="data ? [data.at(0), data.at(1), data.at(2)] : [null, null, null]"
+    :data="!isloading ? [
+        data.at(0),
+        data.at(1),
+        data.filter(a => isFinite(a.change)).reduce((a, b) => (a.change > b.change) ? a : b)
+      ] : [null, null, null]"
     @cardClick="(coin) => openModal(coin)"
   />
 
