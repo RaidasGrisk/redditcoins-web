@@ -20,7 +20,7 @@ const imagesUrl = import.meta.glob("../assets/crypto_logos/*.(png|PNG)", { as: '
 const getImageUrl = (coin) => {
   let coin_path = `../assets/crypto_logos/${coin}.png`
   let coin_path_default = '../assets/crypto_logos/default.png'
-  return coin_path in imagesUrl ? imagesUrl[coin_path] : coin_path_default
+  return coin_path in imagesUrl ? imagesUrl[coin_path] : imagesUrl[coin_path_default]
 }
 
 // chart
