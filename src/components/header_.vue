@@ -36,7 +36,7 @@ const lookBackBlocks = ref(store.getters['settings/getBlockSpan'])
         <n-element>
           <n-avatar :size="68" class="logo" @click="$emit('logoClick')">
             <n-text style="font-size: 32px;">
-              🦌
+              🦒
             </n-text>
           </n-avatar>
         </n-element>
