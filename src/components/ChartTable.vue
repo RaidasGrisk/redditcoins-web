@@ -126,7 +126,7 @@ onMounted( async() => {
       </n-space>
       <div v-if="data.length">
         <n-text :depth="3">
-          {{ data[0].chart.labels.at(-1) }}
+          {{ data[0].chart.labels.at(-1) }} UTC
         </n-text>
       </div>
       <div v-else>
