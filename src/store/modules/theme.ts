@@ -13,7 +13,8 @@ const state = () => ({
       height: '10px'
     },
     common: {
-      infoColor: '#2080f0' // keep same for light and dark
+      infoColor: '#2080f0', // keep same for light and dark
+      borderRadius: '7px',
     },
   },
 

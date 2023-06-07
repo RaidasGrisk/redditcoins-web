@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useStore } from 'vuex'
 import CoinCards from './CoinCards.vue'
 import ApexChart from './ApexChart.vue'
 import { useThemeVars, useLoadingBar } from 'naive-ui'
@@ -31,7 +30,6 @@ const gran = ref('daily')
 const isloading = ref(true)
 const themeVars = useThemeVars()
 const loadingBar = useLoadingBar()
-const store = useStore()
 
 // modal stuff
 const modalChartOptions = JSON.parse(JSON.stringify(chartOptions))
@@ -43,33 +41,31 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 const getData = async () => {
   isloading.value = true
   loadingBar.start()
-  console.log(gran.value)
   data.value = []
-  data.value = refactorData(await getData_()) // await response.json()
+  data.value = refactorData(await getData_())
+  await sleep(1)
   loadingBar.finish()
   isloading.value = false
 }
 
 const getData_ = async () => {
 
-  const url = `https://redditcoins.app/api/volume/market_summary?gran=${gran.value}`
+  const url = `https://api-y7sbigyecq-uc.a.run.app/volume_market_summary?gran=${gran.value}`
   const response = await fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   })
-  return await response.json()
-  // await sleep(1000)
-  // return data_
+  const response_ = await response.json()
+  return response_
 }
 
 const refactorData = (data) => {
-  data = data.cryptocurrency
   const data_ = []
   for (const coin in data) {
-    let mentions = data[coin].data.map(item => item.volume).reverse()
-    let time = data[coin].data.map(item => item.time).reverse()
+    let mentions = data[coin].map(item => item.volume)
+    let time = data[coin].map(item => item.time)
     const color = coin in cryptoColors ? cryptoColors[coin] : themeVars.value.tagColor
     if (mentions.at(-1) > 0) {
       data_.push({

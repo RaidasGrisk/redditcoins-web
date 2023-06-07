@@ -1,8 +1,12 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useThemeVars, useLoadingBar } from 'naive-ui'
+import { useStore } from 'vuex'
 
 let chartOptions = {
+  theme: {
+    mode: 'light',
+  },
   chart: {
     stacked: false,
     toolbar: {
@@ -24,7 +28,7 @@ let chartOptions = {
   },
   legend: {
     position: 'top',
-    horizontalAlign: 'left'
+    horizontalAlign: 'left',
   },
   xaxis: {
     labels: {
@@ -67,6 +71,9 @@ let chartOptions = {
       left: 0
     },
   },
+  tooltip: {
+    theme: 'dark',
+  },
 }
 
 
@@ -77,6 +84,7 @@ const stacked = ref(false)
 const isloading = ref(false)
 const themeVars = useThemeVars()
 const loadingBar = useLoadingBar()
+const store = useStore()
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -85,13 +93,31 @@ const getData = async (coin) => {
   isloading.value = true
   loadingBar.start()
 
-  const url = 'https://redditcoins.app/api/volume/cryptocurrency/'
-  let endDate = new Date().toISOString().slice(0, 10)
+  let year, month, day, hours, minutes, seconds
+
+  const url = 'https://api-y7sbigyecq-uc.a.run.app/volume/'
+  let endDate = new Date()
+
+  year = endDate.getUTCFullYear();
+  month = String(endDate.getUTCMonth() + 1).padStart(2, '0');
+  day = String(endDate.getUTCDate()).padStart(2, '0');
+  hours = String(endDate.getUTCHours()).padStart(2, '0');
+  minutes = String(endDate.getUTCMinutes()).padStart(2, '0');
+  seconds = String(endDate.getUTCSeconds()).padStart(2, '0');
+  endDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
   let startDate = new Date()
   startDate.setDate(startDate.getDate() - 180)
-  startDate = startDate.toISOString().slice(0, 10)
 
-  const urlParams = `${coin}?start=${startDate}&end=${endDate}&ups=-999&submissions=true&comments=true&granularity=D`
+  year = startDate.getUTCFullYear();
+  month = String(startDate.getUTCMonth() + 1).padStart(2, '0');
+  day = String(startDate.getUTCDate()).padStart(2, '0');
+  hours = String(startDate.getUTCHours()).padStart(2, '0');
+  minutes = String(startDate.getUTCMinutes()).padStart(2, '0');
+  seconds = String(startDate.getUTCSeconds()).padStart(2, '0');
+  startDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+  const urlParams = `${coin}?start=${startDate}&end=${endDate}&granularity=day`
   const response = await fetch(url + urlParams, {
     method: 'GET',
     headers: {
@@ -100,61 +126,12 @@ const getData = async (coin) => {
   })
   let series = await response.json()
   series = series.data
-  //
-  // await sleep(500)
-  // const series = [
-  //   {
-  //     "time": "2023-03-08",
-  //     "volume": 10
-  //   },
-  //   {
-  //     "time": "2023-03-07",
-  //     "volume": 9
-  //   },
-  //   {
-  //     "time": "2023-03-06",
-  //     "volume": 29
-  //   },
-  //   {
-  //     "time": "2023-03-05",
-  //     "volume": 7
-  //   },
-  //   {
-  //     "time": "2023-03-04",
-  //     "volume": 18
-  //   },
-  //   {
-  //     "time": "2023-03-03",
-  //     "volume": 19
-  //   },
-  //   {
-  //     "time": "2023-03-02",
-  //     "volume": 24
-  //   },
-  //   {
-  //     "time": "2023-03-01",
-  //     "volume": 25
-  //   },
-  //   {
-  //     "time": "2023-02-28",
-  //     "volume": 15
-  //   },
-  //   {
-  //     "time": "2023-02-27",
-  //     "volume": 14
-  //   },
-  //   {
-  //     "time": "2023-02-26",
-  //     "volume": 17
-  //   }
-  // ]
 
   const time = series.map(item => item.time).reverse()
   const volume = series.map(item => item.volume).reverse()
 
   loadingBar.finish()
   isloading.value = false
-
   return [time, volume]
 
 }
@@ -273,5 +250,15 @@ watch(() => props.showModal, async (current, previous) => {
   </n-modal>
 </template>
 
-<style scoped>
+<style>
+/* https://github.com/apexcharts/apexcharts.js/issues/3387#issuecomment-1264530985 */
+.apexcharts-canvas > svg {
+  background-color: transparent !important;
+}
+
+/* https://stackoverflow.com/a/58364448/4233305 */
+.apexcharts-tooltip {
+  color: #000000;
+}
+
 </style>
