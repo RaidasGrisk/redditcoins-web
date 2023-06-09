@@ -44,7 +44,7 @@ onMounted( async () => {
           <n-space justify="center">
             <n-tooltip trigger="hover">
               <template #trigger>
-                <n-button tertiary circle type="warning" tag="a" href="https://github.com/RaidasGrisk/reddit-to-db" target="_blank">
+                <n-button tertiary circle type="warning" tag="a" href="https://github.com/RaidasGrisk/redditcoins-backend" target="_blank">
                   <template #icon>
                     <n-icon>
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 496 512">
@@ -59,7 +59,7 @@ onMounted( async () => {
             </n-tooltip>
             <n-tooltip trigger="hover">
               <template #trigger>
-                <n-button tertiary circle type="warning" tag="a" href="https://github.com/RaidasGrisk/reddit-coin-app" target="_blank">
+                <n-button tertiary circle type="warning" tag="a" href="https://github.com/RaidasGrisk/redditcoins-api" target="_blank">
                   <template #icon>
                     <n-icon>
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 496 512">
@@ -70,11 +70,11 @@ onMounted( async () => {
                   </template>
                 </n-button>
               </template>
-              API backend
+              API
             </n-tooltip>
             <n-tooltip trigger="hover">
               <template #trigger>
-                <n-button tertiary circle type="warning" tag="a" href="https://github.com/RaidasGrisk/reddit-coin-web" target="_blank">
+                <n-button tertiary circle type="warning" tag="a" href="https://github.com/RaidasGrisk/redditcoins-web" target="_blank">
                   <template #icon>
                     <n-icon>
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 496 512">
@@ -85,7 +85,7 @@ onMounted( async () => {
                   </template>
                 </n-button>
               </template>
-              frontend
+              web
             </n-tooltip>
           </n-space>
         </n-space>
