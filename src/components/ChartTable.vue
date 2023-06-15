@@ -96,6 +96,21 @@ const getChartData = (mentions, time, color) => {
   }
 }
 
+const getCoinThatGrewTheMost = (data) => {
+  // filter out coins that changed infinately 0 to 1 for example
+  const data_ = data.filter(a => isFinite(a.change))
+
+  // find the coin that grew the most
+  if (data_.length > 2) {
+    return data_.reduce((a, b) => (a.change > b.change) ? a : b)
+  } else {
+    // it might be the case that all coins changed infinately.
+    // then just return third coin and not bother with it.
+    return data.at(3)
+  }
+
+}
+
 const openModal = (coin) => {
   selectedCoin.value = coin
   showModal.value = true
@@ -139,7 +154,7 @@ onMounted( async() => {
     :data="!isloading ? [
         data.at(0),
         data.at(1),
-        data.filter(a => isFinite(a.change)).reduce((a, b) => (a.change > b.change) ? a : b)
+        getCoinThatGrewTheMost(data)
       ] : [null, null, null]"
     @cardClick="(coin) => openModal(coin)"
   />
